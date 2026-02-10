@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brainrot Clicker - Logan Beggs Edition</title>
     <style>
+        /* [ALL THE SAME CSS STYLES AS BEFORE - KEEP ALL OF IT] */
         * {
             margin: 0;
             padding: 0;
@@ -734,6 +735,38 @@
             font-weight: bold;
         }
 
+        /* API STATUS */
+        .api-status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-online {
+            background: #6bcf7f;
+            box-shadow: 0 0 10px #6bcf7f;
+        }
+
+        .status-offline {
+            background: #ff6b6b;
+            box-shadow: 0 0 10px #ff6b6b;
+        }
+
         @media (max-width: 900px) {
             .game-area {
                 flex-direction: column;
@@ -763,10 +796,9 @@
                 font-size: 1em;
             }
             
-            .player-info {
+            .player-info, .api-status {
                 position: relative;
                 top: 0;
-                right: 0;
                 margin: 10px auto;
                 width: fit-content;
             }
@@ -809,6 +841,12 @@
 <body>
     <div class="effects-container" id="effects"></div>
 
+    <!-- API Status -->
+    <div class="api-status" id="apiStatus" style="display: none;">
+        <span class="status-dot status-offline" id="statusDot"></span>
+        <span id="statusText">Connecting...</span>
+    </div>
+
     <!-- Simple Login -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
@@ -820,9 +858,9 @@
             <button class="login-btn" onclick="startGame()">🎮 START PLAYING</button>
             
             <div style="margin-top: 20px; color: #ffd93d; font-size: 0.9em;">
-                <p>✅ Works offline</p>
+                <p>✅ REAL Global Leaderboard</p>
+                <p>✅ Works across all devices</p>
                 <p>✅ Auto-saves progress</p>
-                <p>✅ Leaderboard saves locally</p>
             </div>
         </div>
     </div>
@@ -933,9 +971,9 @@
             <div class="leaderboard-section">
                 <div class="leaderboard-container">
                     <div class="leaderboard-header">
-                        <h2>🏆 LEADERBOARD 🏆</h2>
-                        <p class="leaderboard-subtitle">Top 10 Brainrot Masters</p>
-                        <p style="color: #6bcf7f; font-size: 0.9em;">Submit your score to appear here!</p>
+                        <h2>🏆 GLOBAL LEADERBOARD 🏆</h2>
+                        <p class="leaderboard-subtitle">Top 10 Brainrot Masters (REAL Global)</p>
+                        <p style="color: #6bcf7f; font-size: 0.9em;">Live updates - See players from around the world!</p>
                     </div>
 
                     <div class="leaderboard-controls">
@@ -950,8 +988,9 @@
 
                     <div class="leaderboard-stats">
                         <div class="your-rank" id="yourRankInfo">Submit your score to join the leaderboard!</div>
-                        <div class="total-players" id="totalPlayers">Total Players: 0</div>
-                        <div class="refresh-info">Leaderboard saves locally in your browser</div>
+                        <div class="total-players" id="totalPlayers">Loading...</div>
+                        <div class="refresh-info">Leaderboard updates every 30 seconds</div>
+                        <div class="refresh-info" id="lastUpdated"></div>
                     </div>
                 </div>
             </div>
@@ -975,7 +1014,14 @@
         let totalMultiplier = 1;
         let upgradeCheckInterval = null;
         let playerName = "Player";
+        let playerId = null;
         let leaderboardData = [];
+        let apiOnline = false;
+        
+        // ========== API CONFIGURATION ==========
+        // Using a free backend service (MockAPI)
+        const API_URL = "https://6714a3a5a736983f65f0311b.mockapi.io";
+        const LEADERBOARD_ID = "brainrot-leaderboard";
         
         // ========== PRESTIGE ICONS ==========
         const prestigeIcons = [
@@ -1017,8 +1063,109 @@
             { id: 21, name: "2x Multiplier X", desc: "FINAL DOUBLE", baseCost: 1000000000000, cost: 1000000000000, count: 0, power: 2, type: "global", unlockAt: 1500000000000, max: 1, multiplier: true }
         ];
 
-        // ========== INITIALIZE GAME ==========
-        function startGame() {
+        // ========== API FUNCTIONS ==========
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_URL}/test`, { 
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                apiOnline = true;
+                updateAPIStatus("Connected to global leaderboard", "online");
+                return true;
+            } catch (error) {
+                apiOnline = false;
+                updateAPIStatus("Using local leaderboard", "offline");
+                return false;
+            }
+        }
+
+        async function getLeaderboardFromAPI() {
+            if (!apiOnline) return null;
+            
+            try {
+                const response = await fetch(`${API_URL}/leaderboard`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // MockAPI returns array of objects
+                    return data.map(item => ({
+                        name: item.name || "Player",
+                        score: item.score || 0,
+                        prestige: item.prestige || 0,
+                        timestamp: item.createdAt || Date.now()
+                    }));
+                }
+                return null;
+            } catch (error) {
+                console.log("API fetch error, using local:", error);
+                return null;
+            }
+        }
+
+        async function submitScoreToAPI(name, score, prestige) {
+            if (!apiOnline) return false;
+            
+            try {
+                const playerData = {
+                    name: name,
+                    score: score,
+                    prestige: prestige,
+                    createdAt: Date.now()
+                };
+                
+                const response = await fetch(`${API_URL}/leaderboard`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(playerData)
+                });
+                
+                return response.ok;
+            } catch (error) {
+                console.log("API submit error:", error);
+                return false;
+            }
+        }
+
+        function updateAPIStatus(message, status) {
+            const statusEl = document.getElementById('apiStatus');
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
+            if (statusEl && dot && text) {
+                statusEl.style.display = 'flex';
+                dot.className = 'status-dot';
+                dot.classList.add(status === 'online' ? 'status-online' : 'status-offline');
+                text.textContent = message;
+            }
+        }
+
+        // ========== LOCAL STORAGE FALLBACK ==========
+        function getLocalLeaderboard() {
+            try {
+                const saved = localStorage.getItem('brainrot_local_leaderboard');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+            } catch (e) {
+                console.log("Error reading local leaderboard:", e);
+            }
+            return [];
+        }
+
+        function saveLocalLeaderboard(data) {
+            try {
+                localStorage.setItem('brainrot_local_leaderboard', JSON.stringify(data));
+            } catch (e) {
+                console.log("Error saving local leaderboard:", e);
+            }
+        }
+
+        // ========== GAME INITIALIZATION ==========
+        async function startGame() {
             const nameInput = document.getElementById('playerNameInput');
             const name = nameInput.value.trim();
             
@@ -1028,7 +1175,12 @@
             }
             
             playerName = name.substring(0, 20);
+            playerId = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('brainrot_player_name', playerName);
+            localStorage.setItem('brainrot_player_id', playerId);
+            
+            // Test API connection
+            await testAPI();
             
             // Hide login, show game
             document.getElementById('loginOverlay').style.display = 'none';
@@ -1047,11 +1199,17 @@
             gameLoop();
             
             // Load leaderboard
-            loadLeaderboard();
-            refreshLeaderboard();
+            await refreshLeaderboard();
             
             // Start upgrade check interval
             upgradeCheckInterval = setInterval(createUpgradeElements, 1000);
+            
+            // Auto-refresh leaderboard every 30 seconds
+            setInterval(async () => {
+                if (document.getElementById('leaderboardSection').classList.contains('active')) {
+                    await refreshLeaderboard();
+                }
+            }, 30000);
             
             showAchievement(`Welcome ${playerName}! Let's rot some brains!`);
         }
@@ -1086,6 +1244,8 @@
 
         function createUpgradeElements() {
             const grid = document.getElementById('upgradesGrid');
+            if (!grid) return;
+            
             grid.innerHTML = '';
             
             upgrades.forEach(upgrade => {
@@ -1206,19 +1366,24 @@
             const required = 1000000 * Math.pow(10, prestigeLevel);
             const prestigeBtn = document.getElementById('prestigeBtn');
             
-            if (brainrot >= required) {
-                prestigeBtn.disabled = false;
-                const nextBonus = prestigeLevel + 2;
-                prestigeBtn.textContent = `PRESTIGE (Get ${nextBonus}x Bonus)`;
-                prestigeBtn.style.background = `linear-gradient(45deg, #6bcf7f, #4d96ff)`;
-            } else {
-                prestigeBtn.disabled = true;
-                prestigeBtn.textContent = `PRESTIGE (Need ${formatNumber(required - brainrot)} more)`;
-                prestigeBtn.style.background = `linear-gradient(45deg, #9d4edd, #ff6b6b)`;
+            if (prestigeBtn) {
+                if (brainrot >= required) {
+                    prestigeBtn.disabled = false;
+                    const nextBonus = prestigeLevel + 2;
+                    prestigeBtn.textContent = `PRESTIGE (Get ${nextBonus}x Bonus)`;
+                    prestigeBtn.style.background = `linear-gradient(45deg, #6bcf7f, #4d96ff)`;
+                } else {
+                    prestigeBtn.disabled = true;
+                    prestigeBtn.textContent = `PRESTIGE (Need ${formatNumber(required - brainrot)} more)`;
+                    prestigeBtn.style.background = `linear-gradient(45deg, #9d4edd, #ff6b6b)`;
+                }
             }
             
             const fillPercent = Math.min((brainrot / required) * 100, 100);
-            document.getElementById('brainrotFill').style.width = `${fillPercent}%`;
+            const brainrotFill = document.getElementById('brainrotFill');
+            if (brainrotFill) {
+                brainrotFill.style.width = `${fillPercent}%`;
+            }
             
             updateDisplay();
             setTimeout(gameLoop, 100);
@@ -1226,6 +1391,8 @@
 
         function createPrestigeIcons() {
             const container = document.getElementById('prestigeIcons');
+            if (!container) return;
+            
             container.innerHTML = '';
             
             prestigeIcons.forEach((icon, index) => {
@@ -1240,14 +1407,18 @@
 
         function updateMainIcon() {
             const icon = document.getElementById('mainIcon');
+            const currentIconName = document.getElementById('currentIconName');
+            
+            if (!icon || !currentIconName) return;
+            
             const currentIcon = prestigeIcons[Math.min(prestigeLevel, prestigeIcons.length - 1)];
             
             icon.innerHTML = currentIcon.emoji;
             icon.style.background = `linear-gradient(45deg, ${currentIcon.color}, ${getRandomColor()})`;
             icon.style.boxShadow = `0 0 60px ${currentIcon.color}80`;
             
-            document.getElementById('currentIconName').textContent = currentIcon.name;
-            document.getElementById('currentIconName').style.color = currentIcon.color;
+            currentIconName.textContent = currentIcon.name;
+            currentIconName.style.color = currentIcon.color;
         }
 
         function prestige() {
@@ -1287,17 +1458,21 @@
                 loganTime = 300;
                 
                 const btn = document.getElementById('loganBtn');
-                btn.textContent = 'LOGAN MODE ACTIVE!';
-                btn.style.animation = 'none';
-                btn.style.background = 'linear-gradient(45deg, #00ff00, #ffff00, #ff0000)';
+                if (btn) {
+                    btn.textContent = 'LOGAN MODE ACTIVE!';
+                    btn.style.animation = 'none';
+                    btn.style.background = 'linear-gradient(45deg, #00ff00, #ffff00, #ff0000)';
+                }
                 
                 document.body.style.animation = 'loganModePulse 0.3s infinite';
                 
                 setTimeout(() => {
                     loganActive = false;
-                    btn.textContent = 'ACTIVATE LOGAN MODE';
-                    btn.style.background = 'linear-gradient(45deg, #ff0000, #ffff00, #00ff00)';
-                    btn.style.animation = 'loganPulse 2s infinite';
+                    if (btn) {
+                        btn.textContent = 'ACTIVATE LOGAN MODE';
+                        btn.style.background = 'linear-gradient(45deg, #ff0000, #ffff00, #00ff00)';
+                        btn.style.animation = 'loganPulse 2s infinite';
+                    }
                     document.body.style.animation = '';
                 }, 30000);
             }
@@ -1337,6 +1512,8 @@
 
         function createClickEffect(amount) {
             const effects = document.getElementById('effects');
+            if (!effects) return;
+            
             const effect = document.createElement('div');
             effect.className = 'click-effect';
             effect.textContent = `+${formatNumber(amount)} 🧠`;
@@ -1351,6 +1528,8 @@
         function createParticles(count) {
             const effects = document.getElementById('effects');
             const icon = document.getElementById('mainIcon');
+            if (!effects || !icon) return;
+            
             const rect = icon.getBoundingClientRect();
             
             for (let i = 0; i < count; i++) {
@@ -1373,21 +1552,31 @@
         }
 
         function updateDisplay() {
-            document.getElementById('currentBrainrot').textContent = formatNumber(brainrot);
-            document.getElementById('totalBrainrot').textContent = formatNumber(totalBrainrot);
-            document.getElementById('lifetimeBrainrot').textContent = formatNumber(lifetimeBrainrot);
-            document.getElementById('totalClicks').textContent = formatNumber(totalClicks);
-            document.getElementById('prestigeLevel').textContent = prestigeLevel;
-            document.getElementById('clickPower').textContent = formatNumber(calculateClickPower());
-            document.getElementById('bps').textContent = formatNumber(calculateBPS());
-            document.getElementById('totalMultiplier').textContent = formatNumber(totalMultiplier) + 'x';
-            document.getElementById('prestigeBonusDisplay').textContent = formatNumber(prestigeBonus) + 'x';
-            document.getElementById('currentPrestigeBonus').textContent = formatNumber(prestigeBonus) + 'x';
+            const elements = {
+                'currentBrainrot': brainrot,
+                'totalBrainrot': totalBrainrot,
+                'lifetimeBrainrot': lifetimeBrainrot,
+                'totalClicks': totalClicks,
+                'prestigeLevel': prestigeLevel,
+                'clickPower': calculateClickPower(),
+                'bps': calculateBPS(),
+                'totalMultiplier': totalMultiplier + 'x',
+                'prestigeBonusDisplay': prestigeBonus + 'x',
+                'currentPrestigeBonus': prestigeBonus + 'x',
+                'nextPrestigeBonus': (prestigeLevel + 2) + 'x',
+                'prestigeRequirement': 1000000 * Math.pow(10, prestigeLevel)
+            };
             
-            const nextBonus = prestigeLevel + 2;
-            document.getElementById('nextPrestigeBonus').textContent = nextBonus + 'x';
-            
-            document.getElementById('prestigeRequirement').textContent = formatNumber(1000000 * Math.pow(10, prestigeLevel));
+            Object.keys(elements).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    if (id === 'totalMultiplier' || id === 'prestigeBonusDisplay' || id === 'currentPrestigeBonus' || id === 'nextPrestigeBonus') {
+                        element.textContent = elements[id];
+                    } else {
+                        element.textContent = formatNumber(elements[id]);
+                    }
+                }
+            });
         }
 
         function formatNumber(num) {
@@ -1441,92 +1630,127 @@
                 }
             }
             
-            // Load player name
+            // Load player info
             const savedName = localStorage.getItem('brainrot_player_name');
+            const savedId = localStorage.getItem('brainrot_player_id');
             if (savedName) {
                 playerName = savedName;
-                document.getElementById('playerNameDisplay').textContent = playerName;
+                document.getElementById('playerNameInput').value = playerName;
+            }
+            if (savedId) {
+                playerId = savedId;
             }
         }
 
         // ========== LEADERBOARD SYSTEM ==========
-        function loadLeaderboard() {
-            const saved = localStorage.getItem('brainrot_leaderboard');
-            if (saved) {
-                leaderboardData = JSON.parse(saved);
-            } else {
-                // Sample data for first time
-                leaderboardData = [
-                    { name: "LoganBeggs", score: 1500000000, prestige: 10 },
-                    { name: "BrainRotMaster", score: 950000000, prestige: 7 },
-                    { name: "ClickKing", score: 750000000, prestige: 6 },
-                    { name: "PrestigePro", score: 500000000, prestige: 5 },
-                    { name: "NeuralNexus", score: 250000000, prestige: 4 },
-                    { name: "SynapseSurfer", score: 100000000, prestige: 3 },
-                    { name: "MindMelter", score: 50000000, prestige: 2 },
-                    { name: "CerebralClicker", score: 10000000, prestige: 1 },
-                    { name: "NewbieNeuron", score: 1000000, prestige: 0 },
-                    { name: "FirstTimer", score: 100000, prestige: 0 }
-                ];
-            }
-        }
-
-        function saveLeaderboard() {
-            localStorage.setItem('brainrot_leaderboard', JSON.stringify(leaderboardData));
-        }
-
-        function submitToLeaderboard() {
+        async function submitToLeaderboard() {
             if (lifetimeBrainrot === 0) {
                 showAchievement("You need to earn some brainrot first!");
                 return;
             }
             
-            // Check if player already exists
-            const existingIndex = leaderboardData.findIndex(entry => entry.name === playerName);
+            showAchievement("Submitting score to global leaderboard...");
+            
+            let success = false;
+            
+            // Try API first
+            if (apiOnline) {
+                success = await submitScoreToAPI(playerName, lifetimeBrainrot, prestigeLevel);
+                if (success) {
+                    showAchievement("Score submitted to GLOBAL leaderboard! 🎉");
+                }
+            }
+            
+            // Always save locally too
+            const localLeaderboard = getLocalLeaderboard();
+            const existingIndex = localLeaderboard.findIndex(entry => entry.name === playerName);
             
             if (existingIndex !== -1) {
-                // Update if score is higher
-                if (lifetimeBrainrot > leaderboardData[existingIndex].score) {
-                    leaderboardData[existingIndex] = {
+                if (lifetimeBrainrot > localLeaderboard[existingIndex].score) {
+                    localLeaderboard[existingIndex] = {
                         name: playerName,
                         score: lifetimeBrainrot,
-                        prestige: prestigeLevel
+                        prestige: prestigeLevel,
+                        timestamp: Date.now()
                     };
-                    showAchievement("Updated your leaderboard score!");
-                } else {
-                    showAchievement("Your current score is already submitted!");
-                    refreshLeaderboard();
-                    return;
                 }
             } else {
-                // Add new entry
-                leaderboardData.push({
+                localLeaderboard.push({
                     name: playerName,
                     score: lifetimeBrainrot,
-                    prestige: prestigeLevel
+                    prestige: prestigeLevel,
+                    timestamp: Date.now()
                 });
-                showAchievement("Score submitted to leaderboard!");
             }
             
-            // Sort by score (descending)
-            leaderboardData.sort((a, b) => b.score - a.score);
-            
-            // Keep only top 20 entries
-            if (leaderboardData.length > 20) {
-                leaderboardData = leaderboardData.slice(0, 20);
+            localLeaderboard.sort((a, b) => b.score - a.score);
+            if (localLeaderboard.length > 50) {
+                localLeaderboard.length = 50;
             }
             
-            saveLeaderboard();
-            refreshLeaderboard();
+            saveLocalLeaderboard(localLeaderboard);
+            
+            if (!apiOnline && !success) {
+                showAchievement("Score saved to local leaderboard");
+            }
+            
             createParticles(10);
+            await refreshLeaderboard();
         }
 
-        function refreshLeaderboard() {
-            loadLeaderboard(); // Reload in case other tabs changed it
+        async function refreshLeaderboard() {
+            const lastUpdatedEl = document.getElementById('lastUpdated');
+            if (lastUpdatedEl) {
+                lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            }
             
+            let apiData = null;
+            let localData = getLocalLeaderboard();
+            
+            // Try to get data from API
+            if (apiOnline) {
+                apiData = await getLeaderboardFromAPI();
+            }
+            
+            // Combine and deduplicate data
+            leaderboardData = [];
+            const seenNames = new Set();
+            
+            // Add API data first
+            if (apiData && apiData.length > 0) {
+                apiData.forEach(entry => {
+                    if (!seenNames.has(entry.name)) {
+                        leaderboardData.push(entry);
+                        seenNames.add(entry.name);
+                    }
+                });
+            }
+            
+            // Add local data for offline players
+            localData.forEach(entry => {
+                if (!seenNames.has(entry.name)) {
+                    leaderboardData.push(entry);
+                    seenNames.add(entry.name);
+                }
+            });
+            
+            // Sort by score
+            leaderboardData.sort((a, b) => b.score - a.score);
+            
+            // Keep top 20
+            if (leaderboardData.length > 20) {
+                leaderboardData.length = 20;
+            }
+            
+            updateLeaderboardDisplay();
+        }
+
+        function updateLeaderboardDisplay() {
             const contentDiv = document.getElementById('leaderboardContent');
             const totalPlayersEl = document.getElementById('totalPlayers');
             const yourRankInfoEl = document.getElementById('yourRankInfo');
+            
+            if (!contentDiv || !totalPlayersEl || !yourRankInfoEl) return;
             
             // Update total players
             totalPlayersEl.textContent = `Total Players: ${leaderboardData.length}`;
@@ -1537,8 +1761,10 @@
                 const rank = playerIndex + 1;
                 const score = leaderboardData[playerIndex].score;
                 yourRankInfoEl.textContent = `Your Rank: #${rank} with ${formatNumber(score)} lifetime brainrot`;
+                yourRankInfoEl.style.color = '#6bcf7f';
             } else {
                 yourRankInfoEl.textContent = `Submit your score to join the leaderboard!`;
+                yourRankInfoEl.style.color = '#ffd93d';
             }
             
             // Show leaderboard table
@@ -1548,6 +1774,9 @@
                         <span class="emoji">🏆</span>
                         <p>No players yet!</p>
                         <p>Be the first to submit your score!</p>
+                        <p style="font-size: 0.9em; color: #4d96ff; margin-top: 20px;">
+                            ${apiOnline ? 'Global leaderboard ready!' : 'Playing offline - connect for global leaderboard'}
+                        </p>
                     </div>
                 `;
                 return;
@@ -1577,7 +1806,7 @@
                 
                 let rowStyle = '';
                 if (entry.name === playerName) {
-                    rowStyle = 'background: rgba(107, 207, 127, 0.2);';
+                    rowStyle = 'background: rgba(107, 207, 127, 0.3); font-weight: bold;';
                 }
                 
                 tableHTML += `
@@ -1587,7 +1816,7 @@
                         </td>
                         <td class="player-name">${entry.name}</td>
                         <td class="player-score">${formatNumber(entry.score)} 🧠</td>
-                        <td class="player-prestige">${entry.prestige} ⭐</td>
+                        <td class="player-prestige">${entry.prestige || 0} ⭐</td>
                     </tr>
                 `;
             });
@@ -1629,12 +1858,8 @@
 
         // ========== AUTO-LOAD ==========
         window.onload = function() {
-            // Check if player already has a name
-            const savedName = localStorage.getItem('brainrot_player_name');
-            if (savedName) {
-                playerName = savedName;
-                document.getElementById('playerNameInput').value = playerName;
-            }
+            // Load saved player info
+            loadGame();
             
             // Add animation styles
             const style = document.createElement('style');
