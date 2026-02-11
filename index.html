@@ -963,7 +963,7 @@
             'Medium Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
             'Medium Super -IQ Potion': { multiplier: 2, timeLeft: 0 },
             'Isaac Potion': { multiplier: 2.5, timeLeft: 0 },
-            'OP -IQ Potion': { multiplier: 5, timeLeft: 0 }
+            'Caesar Potion': { multiplier: 5, timeLeft: 0 }  // CHANGED: OP -IQ Potion → Caesar Potion
         };
 
         // Prestige icons
@@ -1049,9 +1049,9 @@
                     { chance: 8, name: "3x Isaac Potion", multiplier: 2.5, duration: 300, type: "potion", amount: 3 },
                     { chance: 1, name: "1x Untouchable Mode", type: "mode", amount: 1, modeType: "Untouchable Modes" },
                     { chance: 0.9, name: "Unlimited Gang Mode", type: "unlimited_gang" },
-                    { chance: 0.5, name: "OP -IQ Potion", multiplier: 5, duration: 300, type: "potion" },
+                    { chance: 0.5, name: "Caesar Potion", multiplier: 5, duration: 300, type: "potion" },  // CHANGED: OP -IQ Potion → Caesar Potion
                     { chance: 0.5, name: "1x Dark Supreme Mode", type: "mode", amount: 1, modeType: "Dark Supreme Modes" },
-                    { chance: 0.09, name: "10x OP -IQ Potion", multiplier: 5, duration: 300, type: "potion", amount: 10 },
+                    { chance: 0.09, name: "10x Caesar Potion", multiplier: 5, duration: 300, type: "potion", amount: 10 },  // CHANGED
                     { chance: 0.01, name: "Unlimited Dark Supreme Mode", type: "unlimited_dark_supreme" }
                 ]
             }
@@ -1173,7 +1173,7 @@
             if (loganModesLeft > 0 && !loganActive) {
                 loganModesLeft--;
                 loganActive = true;
-                loganTime = 300;
+                loganTime = 3000; // 300 seconds
                 showAchievement("LOGAN MODE ACTIVATED! 10x multiplier for 30 seconds!");
                 updateModeButtons();
                 updateDisplay();
@@ -1188,7 +1188,7 @@
                         modesInventory['Gang Modes']--;
                     }
                     gangModeActive = true;
-                    gangModeTime = 30;
+                    gangModeTime = 300; // CHANGED: 30 seconds → 3000 ticks (300 seconds)
                     showAchievement("GANG MODE ACTIVATED! 100x multiplier for 30 seconds!");
                     updateModeButtons();
                     updateInventoryDisplay();
@@ -1202,7 +1202,7 @@
             if (!untouchableModeActive && modesInventory['Untouchable Modes'] > 0) {
                 modesInventory['Untouchable Modes']--;
                 untouchableModeActive = true;
-                untouchableModeTime = 30;
+                untouchableModeTime = 300; // CHANGED: 30 seconds → 3000 ticks (300 seconds)
                 showAchievement("UNTOUCHABLE MODE ACTIVATED! 300x multiplier for 30 seconds!");
                 updateModeButtons();
                 updateInventoryDisplay();
@@ -1218,7 +1218,7 @@
                         modesInventory['Dark Supreme Modes']--;
                     }
                     darkSupremeModeActive = true;
-                    darkSupremeModeTime = 30;
+                    darkSupremeModeTime = 300; // CHANGED: 30 seconds → 3000 ticks (300 seconds)
                     showAchievement("DARK SUPREME MODE ACTIVATED! 500x multiplier for 30 seconds!");
                     updateModeButtons();
                     updateInventoryDisplay();
@@ -2016,7 +2016,7 @@
                     'Medium Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
                     'Medium Super -IQ Potion': { multiplier: 2, timeLeft: 0 },
                     'Isaac Potion': { multiplier: 2.5, timeLeft: 0 },
-                    'OP -IQ Potion': { multiplier: 5, timeLeft: 0 }
+                    'Caesar Potion': { multiplier: 5, timeLeft: 0 }  // CHANGED
                 };
                 
                 if (saveData.upgrades) {
