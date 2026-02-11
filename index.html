@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brainrot Clicker - Logan Beggs Edition</title>
     <style>
-        /* [ALL THE SAME CSS STYLES AS BEFORE - KEEP ALL OF IT] */
         * {
             margin: 0;
             padding: 0;
@@ -24,51 +23,6 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-        }
-
-        .tab-navigation {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .tab-btn {
-            background: linear-gradient(45deg, #9d4edd, #ff6b6b);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.5em;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 5px 20px rgba(157, 78, 221, 0.4);
-        }
-
-        .tab-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.6);
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(45deg, #4d96ff, #6bcf7f);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(77, 150, 255, 0.6);
-        }
-
-        .content-section {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         header {
@@ -110,6 +64,45 @@
             font-size: 1.3em;
             color: #ffd93d;
             font-weight: bold;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 2px solid #9d4edd;
+            padding: 12px 30px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 180px;
+        }
+
+        .tab-button:hover {
+            transform: scale(1.05);
+            background: rgba(157, 78, 221, 0.3);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(45deg, #9d4edd, #ff6b6b);
+            box-shadow: 0 0 25px rgba(157, 78, 221, 0.6);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .game-area {
@@ -270,6 +263,185 @@
             font-size: 1.1em;
         }
 
+        .potions-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 25px;
+            padding: 25px;
+            border: 3px solid #9d4edd;
+            box-shadow: 0 0 25px rgba(157, 78, 221, 0.4);
+            margin-bottom: 25px;
+        }
+
+        .chest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .chest-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chest-item:hover:not(.disabled) {
+            transform: translateY(-10px);
+            border-color: #ffd93d;
+            box-shadow: 0 10px 30px rgba(255, 215, 61, 0.3);
+        }
+
+        .chest-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .chest-name {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .wood-chest { border-color: #8B4513; }
+        .silver-chest { border-color: #C0C0C0; }
+        .gold-chest { border-color: #FFD700; }
+        .diamond-chest { border-color: #4d96ff; }
+        .supreme-chest { border-color: #ff6b6b; }
+        .dark-supreme-chest { border-color: #9d4edd; }
+
+        .chest-cost {
+            font-size: 1.4em;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .chest-odds {
+            font-size: 0.9em;
+            color: #ffd93d;
+            margin: 10px 0;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .chest-rewards {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .inventory-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 3px solid #6bcf7f;
+            box-shadow: 0 0 25px rgba(107, 207, 127, 0.4);
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .inventory-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .inventory-item:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .inventory-item-name {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .inventory-item-count {
+            font-size: 1.5em;
+            color: #ffd93d;
+            font-weight: bold;
+        }
+
+        .inventory-item-use {
+            margin-top: 8px;
+            padding: 5px 10px;
+            background: #4d96ff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .inventory-item-use:hover {
+            background: #6bcf7f;
+        }
+
+        .modes-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 3px solid #ff6b6b;
+            box-shadow: 0 0 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .boosts-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 3px solid #9d4edd;
+            box-shadow: 0 0 25px rgba(157, 78, 221, 0.4);
+        }
+
+        .active-boosts {
+            margin-top: 15px;
+        }
+
+        .boost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 5px solid;
+        }
+
+        .boost-timer {
+            font-weight: bold;
+            color: #ff6b6b;
+            font-size: 1.2em;
+        }
+
         .effects-container {
             position: fixed;
             top: 0;
@@ -381,14 +553,18 @@
             filter: drop-shadow(0 0 10px currentColor);
         }
 
-        .logan-mode {
+        .mode-buttons-container {
             position: fixed;
             bottom: 25px;
             right: 25px;
             z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-end;
         }
 
-        #loganBtn {
+        .mode-button {
             background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00);
             color: black;
             border: none;
@@ -398,17 +574,66 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
-            animation: loganPulse 2s infinite;
+            animation: modePulse 2s infinite;
+            min-width: 250px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        @keyframes loganPulse {
+        .mode-button.logan-mode {
+            background: linear-gradient(45deg, #ff0000, #ffff00, #00ff00);
+        }
+
+        .mode-button.gang-mode {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #ff6b6b);
+            animation: gangPulse 1.5s infinite;
+        }
+
+        .mode-button.untouchable-mode {
+            background: linear-gradient(45deg, #4d96ff, #9d4edd, #4d96ff);
+            animation: untouchablePulse 1.2s infinite;
+        }
+
+        .mode-button.dark-supreme-mode {
+            background: linear-gradient(45deg, #9d4edd, #ff6b6b, #9d4edd);
+            animation: darkSupremePulse 1s infinite;
+        }
+
+        .mode-button:hover:not(:disabled) {
+            animation: none;
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .mode-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        .mode-button.active {
+            filter: brightness(1.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        @keyframes modePulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
 
-        #loganBtn:hover {
-            animation: none;
-            transform: scale(1.1) rotate(5deg);
+        @keyframes gangPulse {
+            0%, 100% { transform: scale(1); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.05); filter: hue-rotate(90deg); }
+        }
+
+        @keyframes untouchablePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 20px #4d96ff; }
+            50% { transform: scale(1.05); box-shadow: 0 5px 30px #9d4edd; }
+        }
+
+        @keyframes darkSupremePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 5px 20px #9d4edd; }
+            50% { transform: scale(1.05); box-shadow: 0 5px 40px #ff6b6b; }
         }
 
         .achievement-popup {
@@ -469,302 +694,28 @@
             100% { transform: translateX(100%); }
         }
 
-        /* LEADERBOARD STYLES */
-        .leaderboard-section {
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 25px;
-            padding: 25px;
-            border: 3px solid #ffd93d;
-            box-shadow: 0 0 25px rgba(255, 215, 61, 0.4);
-            margin-bottom: 25px;
+        .reset-button {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1001;
         }
 
-        .leaderboard-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .leaderboard-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .leaderboard-header h2 {
-            font-size: 2.5em;
-            color: #ffd93d;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255, 215, 61, 0.5);
-        }
-
-        .leaderboard-subtitle {
-            color: #4d96ff;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .leaderboard-table th {
-            background: linear-gradient(45deg, #9d4edd, #4d96ff);
-            padding: 15px;
-            text-align: left;
-            font-size: 1.2em;
-            border-bottom: 3px solid #ffd93d;
-        }
-
-        .leaderboard-table td {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1.1em;
-        }
-
-        .leaderboard-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .leaderboard-table tr:nth-child(1) {
-            background: rgba(255, 215, 61, 0.1);
-            color: #ffd93d;
-            font-weight: bold;
-        }
-
-        .leaderboard-table tr:nth-child(2) {
-            background: rgba(192, 192, 192, 0.1);
-            color: #c0c0c0;
-        }
-
-        .leaderboard-table tr:nth-child(3) {
-            background: rgba(205, 127, 50, 0.1);
-            color: #cd7f32;
-        }
-
-        .rank-badge {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .rank-1 .rank-badge {
-            background: linear-gradient(45deg, #ffd93d, #ff6b6b);
-            color: black;
-        }
-
-        .rank-2 .rank-badge {
-            background: linear-gradient(45deg, #c0c0c0, #9d9d9d);
-            color: black;
-        }
-
-        .rank-3 .rank-badge {
-            background: linear-gradient(45deg, #cd7f32, #a0522d);
-            color: black;
-        }
-
-        .rank-4-10 .rank-badge {
-            background: linear-gradient(45deg, #4d96ff, #6bcf7f);
-            color: white;
-        }
-
-        .player-name {
-            font-weight: bold;
-        }
-
-        .player-score {
-            color: #ff6b6b;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .player-prestige {
-            color: #9d4edd;
-            font-weight: bold;
-        }
-
-        .leaderboard-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-
-        .leaderboard-btn {
-            background: linear-gradient(45deg, #4d96ff, #9d4edd);
+        #resetBtn {
+            background: linear-gradient(45deg, #ff0000, #ff6b6b);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
         }
 
-        .leaderboard-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(77, 150, 255, 0.4);
-        }
-
-        .leaderboard-stats {
-            text-align: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-        }
-
-        .your-rank {
-            font-size: 1.3em;
-            color: #ffd93d;
-            margin-bottom: 10px;
-        }
-
-        .total-players {
-            color: #6bcf7f;
-            font-size: 1.1em;
-        }
-
-        .refresh-info {
-            color: #4d96ff;
-            font-size: 0.9em;
-            margin-top: 20px;
-            font-style: italic;
-        }
-
-        .empty-leaderboard {
-            text-align: center;
-            padding: 50px;
-            color: #ffd93d;
-            font-size: 1.2em;
-        }
-
-        .empty-leaderboard .emoji {
-            font-size: 4em;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        /* SIMPLE LOGIN */
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-
-        .login-box {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 40px;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 500px;
-            border: 3px solid #ff6b6b;
-            box-shadow: 0 0 50px rgba(255, 107, 107, 0.5);
-            text-align: center;
-        }
-
-        .login-box h2 {
-            color: #ffd93d;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #4d96ff;
-            border-radius: 10px;
-            color: white;
-            font-size: 1.1em;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: #ff6b6b;
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(45deg, #4d96ff, #6bcf7f);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-
-        .login-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(77, 150, 255, 0.4);
-        }
-
-        .player-info {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: 2px solid #6bcf7f;
-            z-index: 100;
-            font-size: 0.9em;
-        }
-
-        .player-info span {
-            color: #ffd93d;
-            font-weight: bold;
-        }
-
-        /* API STATUS */
-        .api-status {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .status-online {
-            background: #6bcf7f;
-            box-shadow: 0 0 10px #6bcf7f;
-        }
-
-        .status-offline {
-            background: #ff6b6b;
-            box-shadow: 0 0 10px #ff6b6b;
+        #resetBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
 
         @media (max-width: 900px) {
@@ -785,27 +736,30 @@
                 font-size: 6em;
             }
             
-            .tab-btn {
-                padding: 12px 25px;
-                font-size: 1.2em;
+            .tabs {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .leaderboard-table th,
-            .leaderboard-table td {
-                padding: 10px;
-                font-size: 1em;
+            .mode-buttons-container {
+                position: static;
+                margin-top: 20px;
+                align-items: center;
             }
             
-            .player-info, .api-status {
-                position: relative;
-                top: 0;
-                margin: 10px auto;
-                width: fit-content;
+            .mode-button {
+                min-width: 280px;
+            }
+            
+            .reset-button {
+                position: static;
+                text-align: center;
+                margin-bottom: 15px;
             }
         }
 
         @media (max-width: 600px) {
-            .shop-grid {
+            .shop-grid, .chest-grid, .inventory-grid, .modes-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -813,27 +767,10 @@
                 padding: 15px;
             }
             
-            .tab-navigation {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .tab-btn {
-                width: 200px;
-            }
-            
-            .leaderboard-table {
-                font-size: 0.9em;
-            }
-            
-            .leaderboard-controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .login-box {
-                padding: 20px;
-                margin: 20px;
+            .mode-button {
+                min-width: 250px;
+                padding: 12px 20px;
+                font-size: 1.1em;
             }
         }
     </style>
@@ -841,60 +778,33 @@
 <body>
     <div class="effects-container" id="effects"></div>
 
-    <!-- API Status -->
-    <div class="api-status" id="apiStatus" style="display: none;">
-        <span class="status-dot status-offline" id="statusDot"></span>
-        <span id="statusText">Connecting...</span>
+    <div class="reset-button">
+        <button id="resetBtn" onclick="resetGameData()">RESET GAME DATA</button>
     </div>
 
-    <!-- Simple Login -->
-    <div class="login-overlay" id="loginOverlay">
-        <div class="login-box">
-            <h2>🧠 BRAINROT CLICKER 🧠</h2>
-            <p style="color: #4d96ff; margin-bottom: 30px;">Enter your name to start playing!</p>
+    <div class="container">
+        <header>
+            <h1>🧠 BRAINROT CLICKER 🧠</h1>
+            <div class="creator">Made by Logan Beggs</div>
+            <p class="tagline">Click to rot your brain. Prestige to transcend.</p>
             
-            <input type="text" id="playerNameInput" class="login-input" placeholder="Enter your name" maxlength="20" autocomplete="off">
-            
-            <button class="login-btn" onclick="startGame()">🎮 START PLAYING</button>
-            
-            <div style="margin-top: 20px; color: #ffd93d; font-size: 0.9em;">
-                <p>✅ REAL Global Leaderboard</p>
-                <p>✅ Works across all devices</p>
-                <p>✅ Auto-saves progress</p>
+            <div class="brainrot-meter">
+                <div class="brainrot-fill" id="brainrotFill" style="width: 0%"></div>
             </div>
-        </div>
-    </div>
+        </header>
 
-    <!-- Player Info -->
-    <div class="player-info" id="playerInfo" style="display: none;">
-        Playing as: <span id="playerNameDisplay"></span>
-    </div>
-
-    <div class="container" id="gameContainer" style="display: none;">
-        <!-- TAB NAVIGATION -->
-        <div class="tab-navigation">
-            <button class="tab-btn active" onclick="switchTab('game')">🎮 GAME</button>
-            <button class="tab-btn" onclick="switchTab('leaderboard')">🏆 LEADERBOARD</button>
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('upgrades')">UPGRADES</button>
+            <button class="tab-button" onclick="switchTab('potions')">POTIONS</button>
         </div>
 
-        <!-- GAME SECTION -->
-        <div id="gameSection" class="content-section active">
-            <header>
-                <h1>🧠 BRAINROT CLICKER 🧠</h1>
-                <div class="creator">Made by Logan Beggs</div>
-                <p class="tagline">Click to rot your brain. Prestige to transcend.</p>
-                
-                <div class="brainrot-meter">
-                    <div class="brainrot-fill" id="brainrotFill" style="width: 0%"></div>
-                </div>
-            </header>
-
+        <div class="tab-content active" id="upgradesTab">
             <div class="game-area">
                 <div class="clicker-section">
                     <h2>🧠 CLICK THE BRAINROT 🧠</h2>
                     <div class="brainrot-display">
                         <div id="mainIcon" onclick="clickBrainrot()">
-                            🤪
+                            <!-- Icon changes with prestige -->
                         </div>
                     </div>
                     <div class="stats">
@@ -916,7 +826,7 @@
                         <span class="stat-value" id="currentBrainrot">0</span>
                     </div>
                     <div class="stat">
-                        <span>Total Brainrot:</span>
+                        <span>Total Brainrot (Run):</span>
                         <span class="stat-value" id="totalBrainrot">0</span>
                     </div>
                     <div class="stat">
@@ -932,19 +842,23 @@
                         <span class="stat-value" id="prestigeLevel">0</span>
                     </div>
                     <div class="stat">
-                        <span>Multiplier:</span>
-                        <span class="stat-value" id="totalMultiplier">1x</span>
+                        <span>2x Multipliers:</span>
+                        <span class="stat-value" id="buyableMultiplier">1x</span>
                     </div>
                     <div class="stat">
-                        <span>Prestige Bonus:</span>
-                        <span class="stat-value" id="prestigeBonusDisplay">1x</span>
+                        <span>Prestige Multiplier:</span>
+                        <span class="stat-value" id="prestigeMultiplierDisplay">1x</span>
+                    </div>
+                    <div class="stat">
+                        <span>Total Multiplier:</span>
+                        <span class="stat-value" id="totalMultiplier">1x</span>
                     </div>
                 </div>
             </div>
 
             <div class="shop-section">
                 <h2>🛒 BRAINROT UPGRADES 🛒</h2>
-                <p style="color: #ffd93d; text-align: center; margin-bottom: 15px;">Unlocks at 1.5x cost. 2x Multipliers can only be bought once!</p>
+                <p style="color: #ffd93d; text-align: center; margin-bottom: 15px;">Unlocks at 1.5x cost. 2x Multipliers reset on prestige!</p>
                 <div class="shop-grid" id="upgradesGrid">
                     <!-- Upgrades will be generated by JavaScript -->
                 </div>
@@ -952,283 +866,398 @@
 
             <div class="prestige-section">
                 <h2>⭐ PRESTIGE SYSTEM ⭐</h2>
-                <p>Reset everything for permanent multipliers and new icons!</p>
+                <p>Reset everything for exponential multiplier increases!</p>
+                <p style="color: #ff6b6b; font-weight: bold;">⚠️ WARNING: Prestige resets ALL upgrades including 2x multipliers!</p>
                 <p>Current Requirement: <span id="prestigeRequirement" style="color:#ffd93d; font-weight:bold;">1,000,000</span> Brainrot</p>
-                <p class="prestige-icon-info">Current Icon: <span id="currentIconName">Tung Tung Suhur</span></p>
-                <p style="color: #ff6b6b; font-weight: bold; margin: 10px 0;">Current Prestige Bonus: <span id="currentPrestigeBonus">1x</span></p>
-                <p style="color: #4d96ff; font-size: 0.9em; margin-bottom: 10px;">Next Prestige: <span id="nextPrestigeBonus">2x</span> bonus</p>
+                <p class="prestige-icon-info">Current Prestige Multiplier: <span id="currentMultiplier" style="color:#ff6b6b; font-weight:bold;">1x</span></p>
                 
                 <div class="prestige-icons" id="prestigeIcons">
                     <!-- Prestige icons will be generated -->
                 </div>
                 
-                <button id="prestigeBtn" onclick="prestige()" disabled>PRESTIGE (Get 2x Bonus)</button>
+                <button id="prestigeBtn" onclick="prestige()" disabled>PRESTIGE (Get 2x Multiplier)</button>
             </div>
         </div>
 
-        <!-- LEADERBOARD SECTION -->
-        <div id="leaderboardSection" class="content-section">
-            <div class="leaderboard-section">
-                <div class="leaderboard-container">
-                    <div class="leaderboard-header">
-                        <h2>🏆 GLOBAL LEADERBOARD 🏆</h2>
-                        <p class="leaderboard-subtitle">Top 10 Brainrot Masters (REAL Global)</p>
-                        <p style="color: #6bcf7f; font-size: 0.9em;">Live updates - See players from around the world!</p>
+        <div class="tab-content" id="potionsTab">
+            <div class="potions-section">
+                <h2>🧪 POTION CHESTS 🧪</h2>
+                <p style="color: #ffd93d; text-align: center; margin-bottom: 15px;">Open chests to get boosts and Logan Modes!</p>
+                
+                <div class="chest-grid" id="chestsGrid">
+                    <!-- Chests will be generated by JavaScript -->
+                </div>
+                
+                <div class="inventory-section">
+                    <h3>🧪 POTION INVENTORY 🧪</h3>
+                    <div class="inventory-grid" id="inventoryGrid">
+                        <!-- Potion inventory items will be generated here -->
                     </div>
-
-                    <div class="leaderboard-controls">
-                        <button class="leaderboard-btn" onclick="submitToLeaderboard()">📤 SUBMIT SCORE</button>
-                        <button class="leaderboard-btn" onclick="refreshLeaderboard()">🔄 REFRESH</button>
-                        <button class="leaderboard-btn" onclick="changePlayerName()">✏️ CHANGE NAME</button>
+                </div>
+                
+                <div class="modes-section">
+                    <h3>⚡ MODES INVENTORY ⚡</h3>
+                    <div class="modes-grid" id="modesGrid">
+                        <!-- Mode inventory items will be generated here -->
                     </div>
-
-                    <div id="leaderboardContent">
-                        <!-- Leaderboard content will be generated by JavaScript -->
-                    </div>
-
-                    <div class="leaderboard-stats">
-                        <div class="your-rank" id="yourRankInfo">Submit your score to join the leaderboard!</div>
-                        <div class="total-players" id="totalPlayers">Loading...</div>
-                        <div class="refresh-info">Leaderboard updates every 30 seconds</div>
-                        <div class="refresh-info" id="lastUpdated"></div>
+                </div>
+                
+                <div class="boosts-section">
+                    <h3>🚀 ACTIVE BOOSTS 🚀</h3>
+                    <div class="active-boosts" id="activeBoosts">
+                        <p style="text-align: center; color: #ffd93d; padding: 20px;">No active boosts</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="logan-mode">
-        <button id="loganBtn" onclick="activateLoganMode()">ACTIVATE LOGAN MODE</button>
+    <div class="mode-buttons-container" id="modeButtonsContainer">
+        <!-- Mode buttons will be added here dynamically -->
     </div>
 
     <script>
-        // ========== GAME VARIABLES ==========
+        // ========== GAME STATE ==========
+        // CHANGED SAVE KEY: brainrot_clicker_fresh_start_v2 - EVERYONE STARTS FRESH
         let brainrot = 0;
         let totalBrainrot = 0;
         let lifetimeBrainrot = 0;
         let totalClicks = 0;
         let prestigeLevel = 0;
-        let prestigeBonus = 1;
+        let prestigeMultiplier = 1;
+        let loganModesLeft = 0;
+        let buyableMultiplier = 1;
+        let upgradeCheckInterval = null;
+        
+        // Active modes (temporary boosts)
         let loganActive = false;
         let loganTime = 0;
-        let totalMultiplier = 1;
-        let upgradeCheckInterval = null;
-        let playerName = "Player";
-        let playerId = null;
-        let leaderboardData = [];
-        let apiOnline = false;
+        let gangModeActive = false;
+        let gangModeTime = 0;
+        let untouchableModeActive = false;
+        let untouchableModeTime = 0;
+        let darkSupremeModeActive = false;
+        let darkSupremeModeTime = 0;
         
-        // ========== API CONFIGURATION ==========
-        // Using a free backend service (MockAPI)
-        const API_URL = "https://6714a3a5a736983f65f0311b.mockapi.io";
-        const LEADERBOARD_ID = "brainrot-leaderboard";
+        // Unlimited modes (permanent side buttons)
+        let unlimitedGangMode = false;
+        let unlimitedDarkSupremeMode = false;
         
-        // ========== PRESTIGE ICONS ==========
+        // Inventory system
+        let potionInventory = {};
+        let modesInventory = {
+            'Logan Modes': 0,
+            'Gang Modes': 0,
+            'Untouchable Modes': 0,
+            'Dark Supreme Modes': 0
+        };
+        
+        // Active potion boosts
+        let activeBoosts = {
+            'Basic -IQ Potion': { multiplier: 1.25, timeLeft: 0 },
+            'Medium -IQ Potion': { multiplier: 1.25, timeLeft: 0 },
+            'Small Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+            'Medium Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+            'Large Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+            'Small Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
+            'Medium Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
+            'Medium Super -IQ Potion': { multiplier: 2, timeLeft: 0 },
+            'Isaac Potion': { multiplier: 2.5, timeLeft: 0 },
+            'OP -IQ Potion': { multiplier: 5, timeLeft: 0 }
+        };
+
+        // Prestige icons
         const prestigeIcons = [
-            { level: 0, emoji: "🤪", name: "Tung Tung Suhur", color: "#ff6b6b" },
-            { level: 1, emoji: "🧠", name: "Brainrot Initiate", color: "#4d96ff" },
-            { level: 2, emoji: "👁️", name: "Third Eye Opening", color: "#9d4edd" },
-            { level: 3, emoji: "🌀", name: "Mind Vortex", color: "#ffd93d" },
-            { level: 4, emoji: "🌈", name: "Rainbow Brain", color: "#6bcf7f" },
-            { level: 5, emoji: "👑", name: "Brainrot King", color: "#ff6b6b" },
-            { level: 6, emoji: "🌌", name: "Cosmic Brain", color: "#9d4edd" },
-            { level: 7, emoji: "⚡", name: "Neural Overload", color: "#ffd93d" },
-            { level: 8, emoji: "♾️", name: "Infinite Mind", color: "#4d96ff" },
-            { level: 9, emoji: "🦅", name: "Eagle Transcendence", color: "#6bcf7f" },
-            { level: 10, emoji: "👁️‍🗨️", name: "Omniscient Being", color: "#ff6b6b" }
+            { level: 0, emoji: "🤪", name: "Newbie", color: "#ff6b6b", multiplier: 1 },
+            { level: 1, emoji: "🧠", name: "2x Brainrot", color: "#4d96ff", multiplier: 2 },
+            { level: 2, emoji: "👁️", name: "4x Brainrot", color: "#9d4edd", multiplier: 4 },
+            { level: 3, emoji: "🌀", name: "8x Brainrot", color: "#ffd93d", multiplier: 8 },
+            { level: 4, emoji: "🌈", name: "16x Brainrot", color: "#6bcf7f", multiplier: 16 },
+            { level: 5, emoji: "👑", name: "32x Brainrot", color: "#ff6b6b", multiplier: 32 },
+            { level: 6, emoji: "🌌", name: "64x Brainrot", color: "#9d4edd", multiplier: 64 },
+            { level: 7, emoji: "⚡", name: "128x Brainrot", color: "#ffd93d", multiplier: 128 },
+            { level: 8, emoji: "♾️", name: "256x Brainrot", color: "#4d96ff", multiplier: 256 },
+            { level: 9, emoji: "🦅", name: "512x BRAINROT KING", color: "#6bcf7f", multiplier: 512 }
         ];
-        
-        // ========== UPGRADES ==========
+
+        // ========== CHEST DATA ==========
+        const chests = [
+            {
+                id: 1,
+                name: "Wood Chest",
+                cost: 100000,
+                color: "#8B4513",
+                rewards: [
+                    { chance: 90, name: "Basic -IQ Potion", multiplier: 1.25, duration: 300, type: "potion" },
+                    { chance: 9, name: "Medium -IQ Potion", multiplier: 1.25, duration: 600, type: "potion" },
+                    { chance: 1, name: "Small Good -IQ Potion", multiplier: 1.5, duration: 300, type: "potion" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Silver Chest",
+                cost: 10000000,
+                color: "#C0C0C0",
+                rewards: [
+                    { chance: 90, name: "Small Good -IQ Potion", multiplier: 1.5, duration: 300, type: "potion" },
+                    { chance: 9, name: "Medium Good -IQ Potion", multiplier: 1.5, duration: 600, type: "potion" },
+                    { chance: 1, name: "Large Good -IQ Potion", multiplier: 1.5, duration: 1800, type: "potion" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Gold Chest",
+                cost: 1000000000,
+                color: "#FFD700",
+                rewards: [
+                    { chance: 90, name: "Large Good -IQ Potion", multiplier: 1.5, duration: 1800, type: "potion" },
+                    { chance: 9, name: "Small Great -IQ Potion", multiplier: 1.75, duration: 300, type: "potion" },
+                    { chance: 1, name: "Medium Great -IQ Potion", multiplier: 1.75, duration: 600, type: "potion" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Diamond Chest",
+                cost: 100000000000,
+                color: "#4d96ff",
+                rewards: [
+                    { chance: 89, name: "Medium Great -IQ Potion", multiplier: 1.75, duration: 600, type: "potion" },
+                    { chance: 9, name: "3x Logan Modes", type: "mode", amount: 3, modeType: "Logan Modes" },
+                    { chance: 1.9, name: "10x Logan Modes", type: "mode", amount: 10, modeType: "Logan Modes" },
+                    { chance: 0.1, name: "Medium Super -IQ Potion", multiplier: 2, duration: 600, type: "potion" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Supreme Chest",
+                cost: 10000000000000,
+                color: "#ff6b6b",
+                rewards: [
+                    { chance: 89, name: "10x Logan Modes", type: "mode", amount: 10, modeType: "Logan Modes" },
+                    { chance: 9, name: "1x Gang Mode", type: "mode", amount: 1, modeType: "Gang Modes" },
+                    { chance: 1.9, name: "Isaac Potion", multiplier: 2.5, duration: 300, type: "potion" },
+                    { chance: 0.1, name: "5x Gang Mode", type: "mode", amount: 5, modeType: "Gang Modes" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Dark Supreme Chest",
+                cost: 1000000000000000,
+                color: "#9d4edd",
+                rewards: [
+                    { chance: 89, name: "3x Gang Mode", type: "mode", amount: 3, modeType: "Gang Modes" },
+                    { chance: 8, name: "3x Isaac Potion", multiplier: 2.5, duration: 300, type: "potion", amount: 3 },
+                    { chance: 1, name: "1x Untouchable Mode", type: "mode", amount: 1, modeType: "Untouchable Modes" },
+                    { chance: 0.9, name: "Unlimited Gang Mode", type: "unlimited_gang" },
+                    { chance: 0.5, name: "OP -IQ Potion", multiplier: 5, duration: 300, type: "potion" },
+                    { chance: 0.5, name: "1x Dark Supreme Mode", type: "mode", amount: 1, modeType: "Dark Supreme Modes" },
+                    { chance: 0.09, name: "10x OP -IQ Potion", multiplier: 5, duration: 300, type: "potion", amount: 10 },
+                    { chance: 0.01, name: "Unlimited Dark Supreme Mode", type: "unlimited_dark_supreme" }
+                ]
+            }
+        ];
+
+        // ========== UPGRADES DATA ==========
         const upgrades = [
             { id: 1, name: "Extra Finger", desc: "+1 Brainrot per click", baseCost: 100, cost: 100, count: 0, power: 1, type: "click", unlockAt: 150, max: 50, multiplier: false },
             { id: 2, name: "Brain Cell", desc: "+2 Brainrot per second", baseCost: 500, cost: 500, count: 0, power: 2, type: "auto", unlockAt: 750, max: 40, multiplier: false },
-            { id: 3, name: "2x Multiplier I", desc: "DOUBLES all Brainrot", baseCost: 2500, cost: 2500, count: 0, power: 2, type: "global", unlockAt: 3750, max: 1, multiplier: true },
+            
+            { id: 3, name: "2x Multiplier I", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 2500, cost: 2500, count: 0, power: 2, type: "global", unlockAt: 3750, max: 1, multiplier: true },
             { id: 4, name: "Coffee Boost", desc: "+10 Brainrot per click", baseCost: 5000, cost: 5000, count: 0, power: 10, type: "click", unlockAt: 7500, max: 30, multiplier: false },
-            { id: 5, name: "2x Multiplier II", desc: "DOUBLES all Brainrot", baseCost: 25000, cost: 25000, count: 0, power: 2, type: "global", unlockAt: 37500, max: 1, multiplier: true },
+            
+            { id: 5, name: "2x Multiplier II", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 25000, cost: 25000, count: 0, power: 2, type: "global", unlockAt: 37500, max: 1, multiplier: true },
             { id: 6, name: "Brain Farm", desc: "+50 Brainrot per second", baseCost: 50000, cost: 50000, count: 0, power: 50, type: "auto", unlockAt: 75000, max: 20, multiplier: false },
-            { id: 7, name: "2x Multiplier III", desc: "DOUBLES all Brainrot", baseCost: 250000, cost: 250000, count: 0, power: 2, type: "global", unlockAt: 375000, max: 1, multiplier: true },
+            
+            { id: 7, name: "2x Multiplier III", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 250000, cost: 250000, count: 0, power: 2, type: "global", unlockAt: 375000, max: 1, multiplier: true },
             { id: 8, name: "Adderall", desc: "+100 Brainrot per click", baseCost: 500000, cost: 500000, count: 0, power: 100, type: "click", unlockAt: 750000, max: 15, multiplier: false },
-            { id: 9, name: "2x Multiplier IV", desc: "DOUBLES all Brainrot", baseCost: 2500000, cost: 2500000, count: 0, power: 2, type: "global", unlockAt: 3750000, max: 1, multiplier: true },
+            
+            { id: 9, name: "2x Multiplier IV", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 2500000, cost: 2500000, count: 0, power: 2, type: "global", unlockAt: 3750000, max: 1, multiplier: true },
             { id: 10, name: "Synapse Cluster", desc: "+500 Brainrot per second", baseCost: 5000000, cost: 5000000, count: 0, power: 500, type: "auto", unlockAt: 7500000, max: 10, multiplier: false },
-            { id: 11, name: "2x Multiplier V", desc: "DOUBLES all Brainrot", baseCost: 25000000, cost: 25000000, count: 0, power: 2, type: "global", unlockAt: 37500000, max: 1, multiplier: true },
+            
+            { id: 11, name: "2x Multiplier V", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 25000000, cost: 25000000, count: 0, power: 2, type: "global", unlockAt: 37500000, max: 1, multiplier: true },
             { id: 12, name: "God Complex", desc: "+1,000 Brainrot per click", baseCost: 50000000, cost: 50000000, count: 0, power: 1000, type: "click", unlockAt: 75000000, max: 8, multiplier: false },
-            { id: 13, name: "2x Multiplier VI", desc: "DOUBLES all Brainrot", baseCost: 250000000, cost: 250000000, count: 0, power: 2, type: "global", unlockAt: 375000000, max: 1, multiplier: true },
+            
+            { id: 13, name: "2x Multiplier VI", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 250000000, cost: 250000000, count: 0, power: 2, type: "global", unlockAt: 375000000, max: 1, multiplier: true },
             { id: 14, name: "Neural Network", desc: "+5,000 Brainrot per second", baseCost: 500000000, cost: 500000000, count: 0, power: 5000, type: "auto", unlockAt: 750000000, max: 5, multiplier: false },
-            { id: 15, name: "2x Multiplier VII", desc: "DOUBLES all Brainrot", baseCost: 2500000000, cost: 2500000000, count: 0, power: 2, type: "global", unlockAt: 3750000000, max: 1, multiplier: true },
+            
+            { id: 15, name: "2x Multiplier VII", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 2500000000, cost: 2500000000, count: 0, power: 2, type: "global", unlockAt: 3750000000, max: 1, multiplier: true },
             { id: 16, name: "Reality Warper", desc: "+10,000 Brainrot per click", baseCost: 5000000000, cost: 5000000000, count: 0, power: 10000, type: "click", unlockAt: 7500000000, max: 5, multiplier: false },
-            { id: 17, name: "2x Multiplier VIII", desc: "DOUBLES all Brainrot", baseCost: 25000000000, cost: 25000000000, count: 0, power: 2, type: "global", unlockAt: 37500000000, max: 1, multiplier: true },
+            
+            { id: 17, name: "2x Multiplier VIII", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 25000000000, cost: 25000000000, count: 0, power: 2, type: "global", unlockAt: 37500000000, max: 1, multiplier: true },
             { id: 18, name: "Brainrot Singularity", desc: "+50,000 Brainrot per second", baseCost: 50000000000, cost: 50000000000, count: 0, power: 50000, type: "auto", unlockAt: 75000000000, max: 3, multiplier: false },
-            { id: 19, name: "2x Multiplier IX", desc: "DOUBLES all Brainrot", baseCost: 250000000000, cost: 250000000000, count: 0, power: 2, type: "global", unlockAt: 375000000000, max: 1, multiplier: true },
+            
+            { id: 19, name: "2x Multiplier IX", desc: "DOUBLES all Brainrot (resets on prestige)", baseCost: 250000000000, cost: 250000000000, count: 0, power: 2, type: "global", unlockAt: 375000000000, max: 1, multiplier: true },
             { id: 20, name: "Omni-Click", desc: "+100,000 Brainrot per click", baseCost: 500000000000, cost: 500000000000, count: 0, power: 100000, type: "click", unlockAt: 750000000000, max: 3, multiplier: false },
-            { id: 21, name: "2x Multiplier X", desc: "FINAL DOUBLE", baseCost: 1000000000000, cost: 1000000000000, count: 0, power: 2, type: "global", unlockAt: 1500000000000, max: 1, multiplier: true }
+            
+            { id: 21, name: "2x Multiplier X", desc: "FINAL DOUBLE (resets on prestige)", baseCost: 1000000000000, cost: 1000000000000, count: 0, power: 2, type: "global", unlockAt: 1500000000000, max: 1, multiplier: true }
         ];
 
-        // ========== API FUNCTIONS ==========
-        async function testAPI() {
-            try {
-                const response = await fetch(`${API_URL}/test`, { 
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                apiOnline = true;
-                updateAPIStatus("Connected to global leaderboard", "online");
-                return true;
-            } catch (error) {
-                apiOnline = false;
-                updateAPIStatus("Using local leaderboard", "offline");
-                return false;
+        // ========== TAB SYSTEM ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+            
+            if (tabName === 'potions') {
+                createChestElements();
+                updateInventoryDisplay();
+                updateActiveBoostsDisplay();
             }
         }
 
-        async function getLeaderboardFromAPI() {
-            if (!apiOnline) return null;
-            
-            try {
-                const response = await fetch(`${API_URL}/leaderboard`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    // MockAPI returns array of objects
-                    return data.map(item => ({
-                        name: item.name || "Player",
-                        score: item.score || 0,
-                        prestige: item.prestige || 0,
-                        timestamp: item.createdAt || Date.now()
-                    }));
-                }
-                return null;
-            } catch (error) {
-                console.log("API fetch error, using local:", error);
-                return null;
-            }
-        }
-
-        async function submitScoreToAPI(name, score, prestige) {
-            if (!apiOnline) return false;
-            
-            try {
-                const playerData = {
-                    name: name,
-                    score: score,
-                    prestige: prestige,
-                    createdAt: Date.now()
-                };
-                
-                const response = await fetch(`${API_URL}/leaderboard`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(playerData)
-                });
-                
-                return response.ok;
-            } catch (error) {
-                console.log("API submit error:", error);
-                return false;
-            }
-        }
-
-        function updateAPIStatus(message, status) {
-            const statusEl = document.getElementById('apiStatus');
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            
-            if (statusEl && dot && text) {
-                statusEl.style.display = 'flex';
-                dot.className = 'status-dot';
-                dot.classList.add(status === 'online' ? 'status-online' : 'status-offline');
-                text.textContent = message;
-            }
-        }
-
-        // ========== LOCAL STORAGE FALLBACK ==========
-        function getLocalLeaderboard() {
-            try {
-                const saved = localStorage.getItem('brainrot_local_leaderboard');
-                if (saved) {
-                    return JSON.parse(saved);
-                }
-            } catch (e) {
-                console.log("Error reading local leaderboard:", e);
-            }
-            return [];
-        }
-
-        function saveLocalLeaderboard(data) {
-            try {
-                localStorage.setItem('brainrot_local_leaderboard', JSON.stringify(data));
-            } catch (e) {
-                console.log("Error saving local leaderboard:", e);
-            }
-        }
-
-        // ========== GAME INITIALIZATION ==========
-        async function startGame() {
-            const nameInput = document.getElementById('playerNameInput');
-            const name = nameInput.value.trim();
-            
-            if (!name) {
-                alert('Please enter your name!');
-                return;
-            }
-            
-            playerName = name.substring(0, 20);
-            playerId = 'player_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('brainrot_player_name', playerName);
-            localStorage.setItem('brainrot_player_id', playerId);
-            
-            // Test API connection
-            await testAPI();
-            
-            // Hide login, show game
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'block';
-            document.getElementById('playerInfo').style.display = 'block';
-            document.getElementById('playerNameDisplay').textContent = playerName;
-            
-            // Load saved game
+        // ========== INITIALIZATION ==========
+        function init() {
             loadGame();
-            
-            // Initialize game
             updateMainIcon();
             createUpgradeElements();
             createPrestigeIcons();
             updateDisplay();
+            updateModeButtons();
             gameLoop();
             
-            // Load leaderboard
-            await refreshLeaderboard();
-            
-            // Start upgrade check interval
             upgradeCheckInterval = setInterval(createUpgradeElements, 1000);
-            
-            // Auto-refresh leaderboard every 30 seconds
-            setInterval(async () => {
-                if (document.getElementById('leaderboardSection').classList.contains('active')) {
-                    await refreshLeaderboard();
-                }
-            }, 30000);
-            
-            showAchievement(`Welcome ${playerName}! Let's rot some brains!`);
         }
 
-        // ========== GAME FUNCTIONS ==========
+        // ========== MODE BUTTONS ON SIDE ==========
+        function updateModeButtons() {
+            const container = document.getElementById('modeButtonsContainer');
+            container.innerHTML = '';
+            
+            // Logan Mode button (always shown if has uses)
+            if (loganModesLeft > 0 || modesInventory['Logan Modes'] > 0) {
+                const btn = document.createElement('button');
+                btn.className = `mode-button logan-mode ${loganActive ? 'active' : ''}`;
+                btn.textContent = `LOGAN MODE (${loganModesLeft} Left)`;
+                btn.onclick = () => activateLoganMode();
+                btn.disabled = loganActive || loganModesLeft <= 0;
+                container.appendChild(btn);
+            }
+            
+            // Gang Mode button (if unlimited or has active uses)
+            if (unlimitedGangMode || gangModeActive || modesInventory['Gang Modes'] > 0) {
+                const btn = document.createElement('button');
+                btn.className = `mode-button gang-mode ${gangModeActive ? 'active' : ''}`;
+                const uses = unlimitedGangMode ? '∞' : (modesInventory['Gang Modes'] > 0 ? modesInventory['Gang Modes'] : '0');
+                btn.textContent = `GANG MODE (${uses} Left)`;
+                btn.onclick = () => activateGangMode();
+                btn.disabled = gangModeActive || (modesInventory['Gang Modes'] <= 0 && !unlimitedGangMode);
+                container.appendChild(btn);
+            }
+            
+            // Untouchable Mode button
+            if (untouchableModeActive || modesInventory['Untouchable Modes'] > 0) {
+                const btn = document.createElement('button');
+                btn.className = `mode-button untouchable-mode ${untouchableModeActive ? 'active' : ''}`;
+                btn.textContent = `UNTOUCHABLE MODE (${modesInventory['Untouchable Modes']} Left)`;
+                btn.onclick = () => activateUntouchableMode();
+                btn.disabled = untouchableModeActive || modesInventory['Untouchable Modes'] <= 0;
+                container.appendChild(btn);
+            }
+            
+            // Dark Supreme Mode button (if unlimited or has active uses)
+            if (unlimitedDarkSupremeMode || darkSupremeModeActive || modesInventory['Dark Supreme Modes'] > 0) {
+                const btn = document.createElement('button');
+                btn.className = `mode-button dark-supreme-mode ${darkSupremeModeActive ? 'active' : ''}`;
+                const uses = unlimitedDarkSupremeMode ? '∞' : (modesInventory['Dark Supreme Modes'] > 0 ? modesInventory['Dark Supreme Modes'] : '0');
+                btn.textContent = `DARK SUPREME MODE (${uses} Left)`;
+                btn.onclick = () => activateDarkSupremeMode();
+                btn.disabled = darkSupremeModeActive || (modesInventory['Dark Supreme Modes'] <= 0 && !unlimitedDarkSupremeMode);
+                container.appendChild(btn);
+            }
+        }
+
+        // ========== MODE ACTIVATION FUNCTIONS ==========
+        function activateLoganMode() {
+            if (loganModesLeft > 0 && !loganActive) {
+                loganModesLeft--;
+                loganActive = true;
+                loganTime = 300;
+                showAchievement("LOGAN MODE ACTIVATED! 10x multiplier for 30 seconds!");
+                updateModeButtons();
+                updateDisplay();
+                saveGame();
+            }
+        }
+
+        function activateGangMode() {
+            if (!gangModeActive) {
+                if (unlimitedGangMode || modesInventory['Gang Modes'] > 0) {
+                    if (!unlimitedGangMode) {
+                        modesInventory['Gang Modes']--;
+                    }
+                    gangModeActive = true;
+                    gangModeTime = 30;
+                    showAchievement("GANG MODE ACTIVATED! 100x multiplier for 30 seconds!");
+                    updateModeButtons();
+                    updateInventoryDisplay();
+                    updateActiveBoostsDisplay();
+                    saveGame();
+                }
+            }
+        }
+
+        function activateUntouchableMode() {
+            if (!untouchableModeActive && modesInventory['Untouchable Modes'] > 0) {
+                modesInventory['Untouchable Modes']--;
+                untouchableModeActive = true;
+                untouchableModeTime = 30;
+                showAchievement("UNTOUCHABLE MODE ACTIVATED! 300x multiplier for 30 seconds!");
+                updateModeButtons();
+                updateInventoryDisplay();
+                updateActiveBoostsDisplay();
+                saveGame();
+            }
+        }
+
+        function activateDarkSupremeMode() {
+            if (!darkSupremeModeActive) {
+                if (unlimitedDarkSupremeMode || modesInventory['Dark Supreme Modes'] > 0) {
+                    if (!unlimitedDarkSupremeMode) {
+                        modesInventory['Dark Supreme Modes']--;
+                    }
+                    darkSupremeModeActive = true;
+                    darkSupremeModeTime = 30;
+                    showAchievement("DARK SUPREME MODE ACTIVATED! 500x multiplier for 30 seconds!");
+                    updateModeButtons();
+                    updateInventoryDisplay();
+                    updateActiveBoostsDisplay();
+                    saveGame();
+                }
+            }
+        }
+
+        // ========== CLICK FUNCTION ==========
         function clickBrainrot() {
             let clickPower = 1;
+            
             upgrades.forEach(upgrade => {
                 if (upgrade.type === "click" && upgrade.count > 0) {
                     clickPower += upgrade.power * upgrade.count;
                 }
             });
             
-            clickPower *= totalMultiplier;
-            clickPower *= prestigeBonus;
+            clickPower *= buyableMultiplier;
+            clickPower *= prestigeMultiplier;
             
-            if (loganActive) {
-                clickPower *= 10;
+            // Apply active potion boosts (ADDITION)
+            let potionBonus = 0;
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    potionBonus += (activeBoosts[boost].multiplier - 1);
+                }
             }
+            
+            // Apply active modes (ADDITION)
+            let modeBonus = 0;
+            if (loganActive) modeBonus += 9; // 10x = +9
+            if (gangModeActive) modeBonus += 99; // 100x = +99
+            if (untouchableModeActive) modeBonus += 299; // 300x = +299
+            if (darkSupremeModeActive) modeBonus += 499; // 500x = +499
+            
+            // Apply total bonus
+            clickPower *= (1 + potionBonus + modeBonus);
             
             brainrot += clickPower;
             totalBrainrot += clickPower;
@@ -1242,14 +1271,49 @@
             saveGame();
         }
 
+        // ========== VISUAL EFFECTS ==========
+        function createClickEffect(amount) {
+            const effects = document.getElementById('effects');
+            const effect = document.createElement('div');
+            effect.className = 'click-effect';
+            effect.textContent = `+${formatNumber(amount)} 🧠`;
+            effect.style.left = `${50 + (Math.random() * 20 - 10)}%`;
+            effect.style.top = `${50 + (Math.random() * 20 - 10)}%`;
+            effect.style.color = getRandomColor();
+            effects.appendChild(effect);
+            setTimeout(() => effect.remove(), 1200);
+        }
+
+        function createParticles(count) {
+            const effects = document.getElementById('effects');
+            const icon = document.getElementById('mainIcon');
+            const rect = icon.getBoundingClientRect();
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'brainrot-particle';
+                particle.style.left = (rect.left + rect.width / 2) + 'px';
+                particle.style.top = (rect.top + rect.height / 2) + 'px';
+                particle.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+                particle.style.setProperty('--ty', (Math.random() * 200 - 100) + 'px');
+                particle.style.background = `linear-gradient(45deg, ${getRandomColor()}, ${getRandomColor()})`;
+                effects.appendChild(particle);
+                setTimeout(() => particle.remove(), 2500);
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#ff6b6b', '#4d96ff', '#6bcf7f', '#ffd93d', '#9d4edd'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // ========== UPGRADES SYSTEM ==========
         function createUpgradeElements() {
             const grid = document.getElementById('upgradesGrid');
-            if (!grid) return;
-            
             grid.innerHTML = '';
             
             upgrades.forEach(upgrade => {
-                const isUnlocked = totalBrainrot >= (upgrade.baseCost * 1.5);
+                const isUnlocked = lifetimeBrainrot >= (upgrade.baseCost * 1.5);
                 const canAfford = brainrot >= upgrade.cost;
                 const isMaxed = upgrade.count >= upgrade.max;
                 const isBought = upgrade.count > 0;
@@ -1265,25 +1329,13 @@
                 item.innerHTML = `
                     <div class="upgrade-name">${upgrade.name} ${isMaxed ? '✅' : ''}</div>
                     <div class="upgrade-desc">${upgrade.desc}</div>
-                    <div class="upgrade-requirement">Unlocks at: ${formatNumber(upgrade.baseCost * 1.5)} Total Brainrot</div>
+                    <div class="upgrade-requirement">Unlocks at: ${formatNumber(upgrade.baseCost * 1.5)} Lifetime Brainrot</div>
                     <div class="upgrade-cost">Cost: ${formatNumber(upgrade.cost)} 🧠</div>
-                    <div class="upgrade-count">${upgrade.multiplier ? 'One-time 2x' : `Owned: ${upgrade.count}/${upgrade.max}`}</div>
+                    <div class="upgrade-count">${upgrade.multiplier ? 'Resets on Prestige' : `Owned: ${upgrade.count}/${upgrade.max}`}</div>
                 `;
                 
                 if (isUnlocked && !isMaxed && canAfford) {
                     item.onclick = () => buyUpgrade(upgrade.id);
-                    item.style.cursor = 'pointer';
-                    item.style.opacity = '1';
-                } else if (isMaxed) {
-                    item.style.background = 'rgba(107, 207, 127, 0.3)';
-                    item.style.borderColor = '#6bcf7f';
-                    item.style.cursor = 'default';
-                } else if (!isUnlocked) {
-                    item.style.cursor = 'default';
-                    item.style.opacity = '0.5';
-                } else if (isUnlocked && !canAfford) {
-                    item.style.cursor = 'default';
-                    item.style.opacity = '0.8';
                 }
                 
                 grid.appendChild(item);
@@ -1299,9 +1351,10 @@
                 upgrade.count++;
                 
                 if (upgrade.multiplier) {
-                    totalMultiplier *= 2;
+                    buyableMultiplier *= 2;
                     showAchievement(`2X MULTIPLIER UNLOCKED!`);
                     createParticles(25);
+                    
                     document.getElementById('mainIcon').style.animation = 'pulse 0.5s';
                     setTimeout(() => {
                         document.getElementById('mainIcon').style.animation = '';
@@ -1318,121 +1371,517 @@
             }
         }
 
+        // ========== CHEST SYSTEM ==========
+        function createChestElements() {
+            const grid = document.getElementById('chestsGrid');
+            grid.innerHTML = '';
+            
+            chests.forEach(chest => {
+                const canAfford = brainrot >= chest.cost;
+                const item = document.createElement('div');
+                item.className = `chest-item ${chest.name.toLowerCase().replace(' ', '-')} ${canAfford ? '' : 'disabled'}`;
+                item.style.borderColor = chest.color;
+                
+                let oddsHTML = '';
+                chest.rewards.forEach(reward => {
+                    oddsHTML += `<div>${reward.chance}% - ${reward.name}</div>`;
+                });
+                
+                item.innerHTML = `
+                    <div class="chest-name" style="color: ${chest.color}">${chest.name}</div>
+                    <div class="chest-cost">Cost: ${formatNumber(chest.cost)} 🧠</div>
+                    <div class="chest-odds">${oddsHTML}</div>
+                `;
+                
+                if (canAfford) {
+                    item.onclick = () => openChest(chest.id);
+                }
+                
+                grid.appendChild(item);
+            });
+        }
+
+        function openChest(chestId) {
+            const chest = chests.find(c => c.id === chestId);
+            if (!chest || brainrot < chest.cost) return;
+            
+            brainrot -= chest.cost;
+            
+            const random = Math.random() * 100;
+            let cumulative = 0;
+            let selectedReward = null;
+            
+            for (const reward of chest.rewards) {
+                cumulative += reward.chance;
+                if (random <= cumulative) {
+                    selectedReward = reward;
+                    break;
+                }
+            }
+            
+            if (!selectedReward) selectedReward = chest.rewards[0];
+            
+            addToInventory(selectedReward, chest.name);
+            
+            updateDisplay();
+            createChestElements();
+            updateInventoryDisplay();
+            saveGame();
+        }
+
+        function addToInventory(reward, chestName) {
+            let message = `You got ${reward.name} from ${chestName}!`;
+            
+            switch (reward.type) {
+                case 'potion':
+                    const amount = reward.amount || 1;
+                    if (!potionInventory[reward.name]) {
+                        potionInventory[reward.name] = 0;
+                    }
+                    potionInventory[reward.name] += amount;
+                    if (amount > 1) {
+                        message = `You got ${amount}x ${reward.name} from ${chestName}!`;
+                    }
+                    break;
+                    
+                case 'mode':
+                    modesInventory[reward.modeType] += reward.amount;
+                    message = `You got ${reward.amount} ${reward.modeType} from ${chestName}!`;
+                    
+                    if (reward.modeType === 'Logan Modes') {
+                        loganModesLeft += reward.amount;
+                    }
+                    break;
+                    
+                case 'unlimited_gang':
+                    unlimitedGangMode = true;
+                    message = `UNLIMITED GANG MODE UNLOCKED from ${chestName}!`;
+                    updateModeButtons();
+                    break;
+                    
+                case 'unlimited_dark_supreme':
+                    unlimitedDarkSupremeMode = true;
+                    message = `UNLIMITED DARK SUPREME MODE UNLOCKED from ${chestName}!`;
+                    updateModeButtons();
+                    break;
+            }
+            
+            showAchievement(message);
+            createParticles(15);
+        }
+
+        // ========== INVENTORY SYSTEM ==========
+        function updateInventoryDisplay() {
+            const potionGrid = document.getElementById('inventoryGrid');
+            potionGrid.innerHTML = '';
+            
+            let hasPotions = false;
+            for (const potion in potionInventory) {
+                if (potionInventory[potion] > 0) {
+                    hasPotions = true;
+                    addPotionItem(potionGrid, potion, potionInventory[potion], '#6bcf7f');
+                }
+            }
+            
+            if (!hasPotions) {
+                potionGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #ffd93d; padding: 20px;">No potions. Open chests to get potions!</p>';
+            }
+            
+            const modesGrid = document.getElementById('modesGrid');
+            modesGrid.innerHTML = '';
+            
+            let hasModes = false;
+            const modeTypes = ['Logan Modes', 'Gang Modes', 'Untouchable Modes', 'Dark Supreme Modes'];
+            
+            modeTypes.forEach(modeType => {
+                const count = modesInventory[modeType] || 0;
+                if (count > 0) {
+                    hasModes = true;
+                    let color = '#ff6b6b';
+                    if (modeType === 'Logan Modes') color = '#ff0000';
+                    if (modeType === 'Gang Modes') color = '#ff6b6b';
+                    if (modeType === 'Untouchable Modes') color = '#4d96ff';
+                    if (modeType === 'Dark Supreme Modes') color = '#9d4edd';
+                    
+                    addModeItem(modesGrid, modeType, count, color);
+                }
+            });
+            
+            if (!hasModes) {
+                modesGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #ffd93d; padding: 20px;">No modes. Open chests to get modes!</p>';
+            }
+        }
+
+        function addPotionItem(grid, name, count, color) {
+            const item = document.createElement('div');
+            item.className = 'inventory-item';
+            item.style.borderColor = color;
+            item.innerHTML = `
+                <div class="inventory-item-name">${name}</div>
+                <div class="inventory-item-count">${count}</div>
+                <button class="inventory-item-use" onclick="usePotion('${name}')">Use</button>
+            `;
+            grid.appendChild(item);
+        }
+
+        function addModeItem(grid, name, count, color) {
+            const item = document.createElement('div');
+            item.className = 'inventory-item';
+            item.style.borderColor = color;
+            item.innerHTML = `
+                <div class="inventory-item-name">${name}</div>
+                <div class="inventory-item-count">${count}</div>
+                <button class="inventory-item-use" onclick="useModeFromInventory('${name}')">${name === 'Logan Modes' ? 'Add to Uses' : 'Equip'}</button>
+            `;
+            grid.appendChild(item);
+        }
+
+        function usePotion(potionName) {
+            if (potionInventory[potionName] > 0) {
+                potionInventory[potionName]--;
+                
+                let potionData = null;
+                for (const chest of chests) {
+                    for (const reward of chest.rewards) {
+                        if (reward.name === potionName && reward.type === 'potion') {
+                            potionData = reward;
+                            break;
+                        }
+                    }
+                    if (potionData) break;
+                }
+                
+                if (potionData) {
+                    if (!activeBoosts[potionName]) {
+                        activeBoosts[potionName] = { multiplier: potionData.multiplier, timeLeft: 0 };
+                    }
+                    activeBoosts[potionName].timeLeft += potionData.duration * 10;
+                    
+                    showAchievement(`Used ${potionName}! Added ${potionData.duration/60} minutes to boost!`);
+                    updateInventoryDisplay();
+                    updateActiveBoostsDisplay();
+                    saveGame();
+                }
+            }
+        }
+
+        function useModeFromInventory(modeName) {
+            if (modesInventory[modeName] > 0) {
+                modesInventory[modeName]--;
+                
+                if (modeName === 'Logan Modes') {
+                    loganModesLeft++;
+                    showAchievement("Added 1 Logan Mode to your available uses!");
+                } else {
+                    showAchievement(`Equipped 1 ${modeName}! Check the side buttons to activate it!`);
+                }
+                
+                updateModeButtons();
+                updateInventoryDisplay();
+                saveGame();
+            }
+        }
+
+        function updateActiveBoostsDisplay() {
+            const container = document.getElementById('activeBoosts');
+            let hasActiveBoosts = false;
+            
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    hasActiveBoosts = true;
+                    break;
+                }
+            }
+            
+            if (!hasActiveBoosts && !gangModeActive && !untouchableModeActive && !darkSupremeModeActive && !loganActive) {
+                container.innerHTML = '<p style="text-align: center; color: #ffd93d; padding: 20px;">No active boosts</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    const minutes = Math.floor(activeBoosts[boost].timeLeft / 600);
+                    const seconds = Math.floor((activeBoosts[boost].timeLeft % 600) / 10);
+                    const item = document.createElement('div');
+                    item.className = 'boost-item';
+                    item.style.borderLeftColor = '#6bcf7f';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${boost}</strong><br>
+                            <small>${activeBoosts[boost].multiplier}x Multiplier</small>
+                        </div>
+                        <div class="boost-timer">${minutes}:${seconds.toString().padStart(2, '0')}</div>
+                    `;
+                    container.appendChild(item);
+                }
+            }
+            
+            if (loganActive) {
+                const item = document.createElement('div');
+                item.className = 'boost-item';
+                item.style.borderLeftColor = '#ff0000';
+                item.innerHTML = `
+                    <div>
+                        <strong>LOGAN MODE</strong><br>
+                        <small>10x Multiplier</small>
+                    </div>
+                    <div class="boost-timer">${Math.floor(loganTime/10)}s</div>
+                `;
+                container.appendChild(item);
+            }
+            
+            if (gangModeActive) {
+                const item = document.createElement('div');
+                item.className = 'boost-item';
+                item.style.borderLeftColor = '#ff6b6b';
+                item.innerHTML = `
+                    <div>
+                        <strong>GANG MODE</strong><br>
+                        <small>100x Multiplier</small>
+                    </div>
+                    <div class="boost-timer">${gangModeTime}s</div>
+                `;
+                container.appendChild(item);
+            }
+            
+            if (untouchableModeActive) {
+                const item = document.createElement('div');
+                item.className = 'boost-item';
+                item.style.borderLeftColor = '#4d96ff';
+                item.innerHTML = `
+                    <div>
+                        <strong>UNTOUCHABLE MODE</strong><br>
+                        <small>300x Multiplier</small>
+                    </div>
+                    <div class="boost-timer">${untouchableModeTime}s</div>
+                `;
+                container.appendChild(item);
+            }
+            
+            if (darkSupremeModeActive) {
+                const item = document.createElement('div');
+                item.className = 'boost-item';
+                item.style.borderLeftColor = '#9d4edd';
+                item.innerHTML = `
+                    <div>
+                        <strong>DARK SUPREME MODE</strong><br>
+                        <small>500x Multiplier</small>
+                    </div>
+                    <div class="boost-timer">${darkSupremeModeTime}s</div>
+                `;
+                container.appendChild(item);
+            }
+        }
+
+        // ========== PRODUCTION CALCULATION ==========
         function calculateBPS() {
             let bps = 0;
+            
             upgrades.forEach(upgrade => {
                 if (upgrade.type === "auto" && upgrade.count > 0) {
                     bps += upgrade.power * upgrade.count;
                 }
             });
-            bps *= totalMultiplier;
-            bps *= prestigeBonus;
-            if (loganActive) bps *= 10;
+            
+            bps *= buyableMultiplier;
+            bps *= prestigeMultiplier;
+            
+            let potionBonus = 0;
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    potionBonus += (activeBoosts[boost].multiplier - 1);
+                }
+            }
+            
+            let modeBonus = 0;
+            if (loganActive) modeBonus += 9;
+            if (gangModeActive) modeBonus += 99;
+            if (untouchableModeActive) modeBonus += 299;
+            if (darkSupremeModeActive) modeBonus += 499;
+            
+            bps *= (1 + potionBonus + modeBonus);
+            
             return bps;
         }
 
         function calculateClickPower() {
             let power = 1;
+            
             upgrades.forEach(upgrade => {
                 if (upgrade.type === "click" && upgrade.count > 0) {
                     power += upgrade.power * upgrade.count;
                 }
             });
-            power *= totalMultiplier;
-            power *= prestigeBonus;
-            if (loganActive) power *= 10;
+            
+            power *= buyableMultiplier;
+            power *= prestigeMultiplier;
+            
+            let potionBonus = 0;
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    potionBonus += (activeBoosts[boost].multiplier - 1);
+                }
+            }
+            
+            let modeBonus = 0;
+            if (loganActive) modeBonus += 9;
+            if (gangModeActive) modeBonus += 99;
+            if (untouchableModeActive) modeBonus += 299;
+            if (darkSupremeModeActive) modeBonus += 499;
+            
+            power *= (1 + potionBonus + modeBonus);
+            
             return power;
         }
 
+        function calculateTotalMultiplier() {
+            let total = buyableMultiplier * prestigeMultiplier;
+            
+            let potionBonus = 0;
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    potionBonus += (activeBoosts[boost].multiplier - 1);
+                }
+            }
+            
+            let modeBonus = 0;
+            if (loganActive) modeBonus += 9;
+            if (gangModeActive) modeBonus += 99;
+            if (untouchableModeActive) modeBonus += 299;
+            if (darkSupremeModeActive) modeBonus += 499;
+            
+            total *= (1 + potionBonus + modeBonus);
+            
+            return total;
+        }
+
+        // ========== GAME LOOP ==========
         function gameLoop() {
             const bps = calculateBPS();
             if (bps > 0) {
-                brainrot += bps / 10;
-                totalBrainrot += bps / 10;
-                lifetimeBrainrot += bps / 10;
+                const gain = bps / 10;
+                brainrot += gain;
+                totalBrainrot += gain;
+                lifetimeBrainrot += gain;
             }
             
+            // Update timers
             if (loganActive) {
                 loganTime--;
                 if (loganTime <= 0) {
                     loganActive = false;
-                    const btn = document.getElementById('loganBtn');
-                    btn.textContent = 'ACTIVATE LOGAN MODE';
-                    btn.style.animation = 'loganPulse 2s infinite';
-                    document.body.style.animation = '';
+                    updateModeButtons();
                 }
+            }
+            
+            if (gangModeActive) {
+                gangModeTime--;
+                if (gangModeTime <= 0) {
+                    gangModeActive = false;
+                    updateModeButtons();
+                    updateActiveBoostsDisplay();
+                }
+            }
+            
+            if (untouchableModeActive) {
+                untouchableModeTime--;
+                if (untouchableModeTime <= 0) {
+                    untouchableModeActive = false;
+                    updateModeButtons();
+                    updateActiveBoostsDisplay();
+                }
+            }
+            
+            if (darkSupremeModeActive) {
+                darkSupremeModeTime--;
+                if (darkSupremeModeTime <= 0) {
+                    darkSupremeModeActive = false;
+                    updateModeButtons();
+                    updateActiveBoostsDisplay();
+                }
+            }
+            
+            let needsBoostUpdate = false;
+            for (const boost in activeBoosts) {
+                if (activeBoosts[boost].timeLeft > 0) {
+                    activeBoosts[boost].timeLeft--;
+                    needsBoostUpdate = true;
+                }
+            }
+            if (needsBoostUpdate) {
+                updateActiveBoostsDisplay();
             }
             
             const required = 1000000 * Math.pow(10, prestigeLevel);
             const prestigeBtn = document.getElementById('prestigeBtn');
             
-            if (prestigeBtn) {
-                if (brainrot >= required) {
-                    prestigeBtn.disabled = false;
-                    const nextBonus = prestigeLevel + 2;
-                    prestigeBtn.textContent = `PRESTIGE (Get ${nextBonus}x Bonus)`;
-                    prestigeBtn.style.background = `linear-gradient(45deg, #6bcf7f, #4d96ff)`;
-                } else {
-                    prestigeBtn.disabled = true;
-                    prestigeBtn.textContent = `PRESTIGE (Need ${formatNumber(required - brainrot)} more)`;
-                    prestigeBtn.style.background = `linear-gradient(45deg, #9d4edd, #ff6b6b)`;
-                }
+            if (brainrot >= required && prestigeLevel < 9) {
+                prestigeBtn.disabled = false;
+                const nextMultiplier = Math.pow(2, prestigeLevel + 1);
+                prestigeBtn.textContent = `PRESTIGE (Get ${nextMultiplier}x Multiplier)`;
+                prestigeBtn.style.background = `linear-gradient(45deg, #6bcf7f, #4d96ff)`;
+            } else if (prestigeLevel >= 9) {
+                prestigeBtn.disabled = true;
+                prestigeBtn.textContent = `MAX PRESTIGE REACHED!`;
+                prestigeBtn.style.background = `linear-gradient(45deg, #ffd93d, #ff6b6b)`;
+            } else {
+                prestigeBtn.disabled = true;
+                prestigeBtn.style.background = `linear-gradient(45deg, #9d4edd, #ff6b6b)`;
             }
             
             const fillPercent = Math.min((brainrot / required) * 100, 100);
-            const brainrotFill = document.getElementById('brainrotFill');
-            if (brainrotFill) {
-                brainrotFill.style.width = `${fillPercent}%`;
-            }
+            document.getElementById('brainrotFill').style.width = `${fillPercent}%`;
             
             updateDisplay();
             setTimeout(gameLoop, 100);
         }
 
+        // ========== PRESTIGE SYSTEM ==========
         function createPrestigeIcons() {
             const container = document.getElementById('prestigeIcons');
-            if (!container) return;
-            
             container.innerHTML = '';
             
+            const maxPrestiges = 9;
             prestigeIcons.forEach((icon, index) => {
-                const iconEl = document.createElement('div');
-                iconEl.className = `prestige-icon ${index <= prestigeLevel ? 'active' : ''}`;
-                iconEl.textContent = icon.emoji;
-                iconEl.style.color = icon.color;
-                iconEl.title = `${icon.name} (Level ${icon.level})`;
-                container.appendChild(iconEl);
+                if (index <= maxPrestiges) {
+                    const iconEl = document.createElement('div');
+                    iconEl.className = `prestige-icon ${index <= prestigeLevel ? 'active' : ''}`;
+                    iconEl.textContent = icon.emoji;
+                    iconEl.style.color = icon.color;
+                    iconEl.title = `${icon.name} (${icon.multiplier}x)`;
+                    container.appendChild(iconEl);
+                }
             });
         }
 
         function updateMainIcon() {
             const icon = document.getElementById('mainIcon');
-            const currentIconName = document.getElementById('currentIconName');
-            
-            if (!icon || !currentIconName) return;
-            
             const currentIcon = prestigeIcons[Math.min(prestigeLevel, prestigeIcons.length - 1)];
             
             icon.innerHTML = currentIcon.emoji;
             icon.style.background = `linear-gradient(45deg, ${currentIcon.color}, ${getRandomColor()})`;
             icon.style.boxShadow = `0 0 60px ${currentIcon.color}80`;
             
-            currentIconName.textContent = currentIcon.name;
-            currentIconName.style.color = currentIcon.color;
+            document.getElementById('currentMultiplier').textContent = `${currentIcon.multiplier}x`;
+            document.getElementById('currentMultiplier').style.color = currentIcon.color;
         }
 
         function prestige() {
             const required = 1000000 * Math.pow(10, prestigeLevel);
             
-            if (brainrot >= required) {
+            if (brainrot >= required && prestigeLevel < 9) {
                 prestigeLevel++;
-                prestigeBonus = prestigeLevel + 1;
+                prestigeMultiplier = Math.pow(2, prestigeLevel);
                 
                 brainrot = 0;
                 totalBrainrot = 0;
                 totalClicks = 0;
-                totalMultiplier = 1;
+                buyableMultiplier = 1;
                 
+                // Keep inventory, modes, and unlimited modes on prestige
+                // Only reset upgrades
                 upgrades.forEach(upgrade => {
                     upgrade.count = 0;
                     upgrade.cost = upgrade.baseCost;
@@ -1441,56 +1890,32 @@
                 updateMainIcon();
                 createPrestigeIcons();
                 
-                const iconName = prestigeIcons[Math.min(prestigeLevel, prestigeIcons.length - 1)].name;
-                showAchievement(`PRESTIGE ${prestigeLevel}! ${prestigeBonus}x MULTIPLIER!`);
-                showAchievement(`Lifetime Brainrot: ${formatNumber(lifetimeBrainrot)}!`);
+                showAchievement(`PRESTIGE ${prestigeLevel}! Got ${prestigeMultiplier}x Multiplier!`);
                 createParticles(50);
                 
                 updateDisplay();
                 createUpgradeElements();
+                updateInventoryDisplay();
                 saveGame();
             }
         }
 
-        function activateLoganMode() {
-            if (!loganActive) {
-                loganActive = true;
-                loganTime = 300;
-                
-                const btn = document.getElementById('loganBtn');
-                if (btn) {
-                    btn.textContent = 'LOGAN MODE ACTIVE!';
-                    btn.style.animation = 'none';
-                    btn.style.background = 'linear-gradient(45deg, #00ff00, #ffff00, #ff0000)';
-                }
-                
-                document.body.style.animation = 'loganModePulse 0.3s infinite';
-                
-                setTimeout(() => {
-                    loganActive = false;
-                    if (btn) {
-                        btn.textContent = 'ACTIVATE LOGAN MODE';
-                        btn.style.background = 'linear-gradient(45deg, #ff0000, #ffff00, #00ff00)';
-                        btn.style.animation = 'loganPulse 2s infinite';
-                    }
-                    document.body.style.animation = '';
-                }, 30000);
+        // ========== RESET GAME DATA ==========
+        function resetGameData() {
+            if (confirm("Are you sure you want to reset ALL game data? This cannot be undone!")) {
+                localStorage.removeItem('brainrot_clicker_fresh_start_v2');
+                location.reload();
             }
         }
 
+        // ========== ACHIEVEMENTS ==========
         function checkAchievements() {
             const achievements = [
                 { check: () => lifetimeBrainrot >= 1000, text: "1K Lifetime Brainrot!" },
                 { check: () => lifetimeBrainrot >= 10000, text: "10K Lifetime Brainrot!!" },
                 { check: () => lifetimeBrainrot >= 100000, text: "100K Lifetime Brainrot!!!" },
-                { check: () => lifetimeBrainrot >= 1000000, text: "1 MILLION Lifetime Brainrot!!!" },
-                { check: () => lifetimeBrainrot >= 1000000000, text: "1 BILLION Lifetime Brainrot!!!" },
-                { check: () => lifetimeBrainrot >= 1000000000000, text: "1 TRILLION Lifetime Brainrot!!!" },
                 { check: () => totalClicks >= 100, text: "100 Clicks!" },
-                { check: () => upgrades.some(u => u.multiplier && u.count > 0), text: "First 2x Multiplier!" },
-                { check: () => prestigeLevel >= 1, text: "First Prestige!" },
-                { check: () => prestigeLevel >= 5, text: "Prestige Master!" },
-                { check: () => prestigeLevel >= 10, text: "MAX PRESTIGE!" }
+                { check: () => upgrades.some(u => u.multiplier && u.count > 0), text: "First 2x Multiplier!" }
             ];
             
             achievements.forEach(achievement => {
@@ -1506,121 +1931,96 @@
             popup.className = 'achievement-popup';
             popup.textContent = `🏆 ${text}`;
             document.body.appendChild(popup);
-            
             setTimeout(() => popup.remove(), 3000);
         }
 
-        function createClickEffect(amount) {
-            const effects = document.getElementById('effects');
-            if (!effects) return;
-            
-            const effect = document.createElement('div');
-            effect.className = 'click-effect';
-            effect.textContent = `+${formatNumber(amount)} 🧠`;
-            effect.style.left = `${50 + (Math.random() * 20 - 10)}%`;
-            effect.style.top = `${50 + (Math.random() * 20 - 10)}%`;
-            effect.style.color = getRandomColor();
-            effects.appendChild(effect);
-            
-            setTimeout(() => effect.remove(), 1200);
-        }
-
-        function createParticles(count) {
-            const effects = document.getElementById('effects');
-            const icon = document.getElementById('mainIcon');
-            if (!effects || !icon) return;
-            
-            const rect = icon.getBoundingClientRect();
-            
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'brainrot-particle';
-                particle.style.left = (rect.left + rect.width / 2) + 'px';
-                particle.style.top = (rect.top + rect.height / 2) + 'px';
-                particle.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
-                particle.style.setProperty('--ty', (Math.random() * 200 - 100) + 'px');
-                particle.style.background = `linear-gradient(45deg, ${getRandomColor()}, ${getRandomColor()})`;
-                effects.appendChild(particle);
-                
-                setTimeout(() => particle.remove(), 2500);
-            }
-        }
-
-        function getRandomColor() {
-            const colors = ['#ff6b6b', '#4d96ff', '#6bcf7f', '#ffd93d', '#9d4edd'];
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
+        // ========== DISPLAY UPDATE ==========
         function updateDisplay() {
-            const elements = {
-                'currentBrainrot': brainrot,
-                'totalBrainrot': totalBrainrot,
-                'lifetimeBrainrot': lifetimeBrainrot,
-                'totalClicks': totalClicks,
-                'prestigeLevel': prestigeLevel,
-                'clickPower': calculateClickPower(),
-                'bps': calculateBPS(),
-                'totalMultiplier': totalMultiplier + 'x',
-                'prestigeBonusDisplay': prestigeBonus + 'x',
-                'currentPrestigeBonus': prestigeBonus + 'x',
-                'nextPrestigeBonus': (prestigeLevel + 2) + 'x',
-                'prestigeRequirement': 1000000 * Math.pow(10, prestigeLevel)
-            };
+            document.getElementById('currentBrainrot').textContent = formatNumber(brainrot);
+            document.getElementById('totalBrainrot').textContent = formatNumber(totalBrainrot);
+            document.getElementById('lifetimeBrainrot').textContent = formatNumber(lifetimeBrainrot);
+            document.getElementById('totalClicks').textContent = formatNumber(totalClicks);
+            document.getElementById('prestigeLevel').textContent = prestigeLevel;
+            document.getElementById('clickPower').textContent = formatNumber(calculateClickPower());
+            document.getElementById('bps').textContent = formatNumber(calculateBPS());
             
-            Object.keys(elements).forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    if (id === 'totalMultiplier' || id === 'prestigeBonusDisplay' || id === 'currentPrestigeBonus' || id === 'nextPrestigeBonus') {
-                        element.textContent = elements[id];
-                    } else {
-                        element.textContent = formatNumber(elements[id]);
-                    }
-                }
-            });
+            document.getElementById('buyableMultiplier').textContent = formatNumber(buyableMultiplier) + 'x';
+            document.getElementById('prestigeMultiplierDisplay').textContent = formatNumber(prestigeMultiplier) + 'x';
+            
+            const totalEffectiveMultiplier = calculateTotalMultiplier();
+            document.getElementById('totalMultiplier').textContent = formatNumber(totalEffectiveMultiplier) + 'x';
+            
+            document.getElementById('prestigeRequirement').textContent = formatNumber(1000000 * Math.pow(10, prestigeLevel));
         }
 
+        // ========== UTILITIES ==========
         function formatNumber(num) {
-            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
-            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e15) return (num / 1e15).toFixed(3) + 'Qd';
+            if (num >= 1e12) return (num / 1e12).toFixed(3) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(3) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(3) + 'M';
             if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
             return Math.floor(num);
         }
 
-        // ========== SAVE/LOAD SYSTEM ==========
+        // ========== SAVE/LOAD ==========
+        // CHANGED SAVE KEY: brainrot_clicker_fresh_start_v2
         function saveGame() {
-            const gameData = {
+            const saveData = {
                 brainrot,
                 totalBrainrot,
                 lifetimeBrainrot,
                 totalClicks,
                 prestigeLevel,
-                totalMultiplier,
-                upgrades: upgrades.map(u => ({ 
-                    id: u.id, 
-                    count: u.count, 
-                    cost: u.cost
-                }))
+                prestigeMultiplier,
+                buyableMultiplier,
+                loganModesLeft,
+                unlimitedGangMode,
+                unlimitedDarkSupremeMode,
+                potionInventory,
+                modesInventory,
+                activeBoosts,
+                upgrades: upgrades.map(u => ({ id: u.id, count: u.count, cost: u.cost }))
             };
-            
-            localStorage.setItem('brainrot_game_data', JSON.stringify(gameData));
+            localStorage.setItem('brainrot_clicker_fresh_start_v2', JSON.stringify(saveData));
         }
 
         function loadGame() {
-            const saved = localStorage.getItem('brainrot_game_data');
+            const saved = localStorage.getItem('brainrot_clicker_fresh_start_v2');
             if (saved) {
-                const gameData = JSON.parse(saved);
+                const saveData = JSON.parse(saved);
+                brainrot = saveData.brainrot || 0;
+                totalBrainrot = saveData.totalBrainrot || 0;
+                lifetimeBrainrot = saveData.lifetimeBrainrot || 0;
+                totalClicks = saveData.totalClicks || 0;
+                prestigeLevel = saveData.prestigeLevel || 0;
+                prestigeMultiplier = saveData.prestigeMultiplier || 1;
+                buyableMultiplier = saveData.buyableMultiplier || 1;
+                loganModesLeft = saveData.loganModesLeft || 0;
+                unlimitedGangMode = saveData.unlimitedGangMode || false;
+                unlimitedDarkSupremeMode = saveData.unlimitedDarkSupremeMode || false;
+                potionInventory = saveData.potionInventory || {};
+                modesInventory = saveData.modesInventory || {
+                    'Logan Modes': 0,
+                    'Gang Modes': 0,
+                    'Untouchable Modes': 0,
+                    'Dark Supreme Modes': 0
+                };
+                activeBoosts = saveData.activeBoosts || {
+                    'Basic -IQ Potion': { multiplier: 1.25, timeLeft: 0 },
+                    'Medium -IQ Potion': { multiplier: 1.25, timeLeft: 0 },
+                    'Small Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+                    'Medium Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+                    'Large Good -IQ Potion': { multiplier: 1.5, timeLeft: 0 },
+                    'Small Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
+                    'Medium Great -IQ Potion': { multiplier: 1.75, timeLeft: 0 },
+                    'Medium Super -IQ Potion': { multiplier: 2, timeLeft: 0 },
+                    'Isaac Potion': { multiplier: 2.5, timeLeft: 0 },
+                    'OP -IQ Potion': { multiplier: 5, timeLeft: 0 }
+                };
                 
-                brainrot = gameData.brainrot || 0;
-                totalBrainrot = gameData.totalBrainrot || 0;
-                lifetimeBrainrot = gameData.lifetimeBrainrot || 0;
-                totalClicks = gameData.totalClicks || 0;
-                prestigeLevel = gameData.prestigeLevel || 0;
-                totalMultiplier = gameData.totalMultiplier || 1;
-                prestigeBonus = (gameData.prestigeLevel || 0) + 1;
-                
-                if (gameData.upgrades) {
-                    gameData.upgrades.forEach(savedUpgrade => {
+                if (saveData.upgrades) {
+                    saveData.upgrades.forEach(savedUpgrade => {
                         const upgrade = upgrades.find(u => u.id === savedUpgrade.id);
                         if (upgrade) {
                             upgrade.count = savedUpgrade.count || 0;
@@ -1629,258 +2029,37 @@
                     });
                 }
             }
-            
-            // Load player info
-            const savedName = localStorage.getItem('brainrot_player_name');
-            const savedId = localStorage.getItem('brainrot_player_id');
-            if (savedName) {
-                playerName = savedName;
-                document.getElementById('playerNameInput').value = playerName;
-            }
-            if (savedId) {
-                playerId = savedId;
-            }
         }
 
-        // ========== LEADERBOARD SYSTEM ==========
-        async function submitToLeaderboard() {
-            if (lifetimeBrainrot === 0) {
-                showAchievement("You need to earn some brainrot first!");
-                return;
-            }
-            
-            showAchievement("Submitting score to global leaderboard...");
-            
-            let success = false;
-            
-            // Try API first
-            if (apiOnline) {
-                success = await submitScoreToAPI(playerName, lifetimeBrainrot, prestigeLevel);
-                if (success) {
-                    showAchievement("Score submitted to GLOBAL leaderboard! 🎉");
-                }
-            }
-            
-            // Always save locally too
-            const localLeaderboard = getLocalLeaderboard();
-            const existingIndex = localLeaderboard.findIndex(entry => entry.name === playerName);
-            
-            if (existingIndex !== -1) {
-                if (lifetimeBrainrot > localLeaderboard[existingIndex].score) {
-                    localLeaderboard[existingIndex] = {
-                        name: playerName,
-                        score: lifetimeBrainrot,
-                        prestige: prestigeLevel,
-                        timestamp: Date.now()
-                    };
-                }
-            } else {
-                localLeaderboard.push({
-                    name: playerName,
-                    score: lifetimeBrainrot,
-                    prestige: prestigeLevel,
-                    timestamp: Date.now()
-                });
-            }
-            
-            localLeaderboard.sort((a, b) => b.score - a.score);
-            if (localLeaderboard.length > 50) {
-                localLeaderboard.length = 50;
-            }
-            
-            saveLocalLeaderboard(localLeaderboard);
-            
-            if (!apiOnline && !success) {
-                showAchievement("Score saved to local leaderboard");
-            }
-            
-            createParticles(10);
-            await refreshLeaderboard();
-        }
+        // ========== START GAME ==========
+        window.onload = init;
 
-        async function refreshLeaderboard() {
-            const lastUpdatedEl = document.getElementById('lastUpdated');
-            if (lastUpdatedEl) {
-                lastUpdatedEl.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes titleGlow {
+                0% { filter: hue-rotate(0deg) drop-shadow(0 0 20px #ff6b6b); }
+                25% { filter: hue-rotate(90deg) drop-shadow(0 0 20px #4d96ff); }
+                50% { filter: hue-rotate(180deg) drop-shadow(0 0 20px #6bcf7f); }
+                75% { filter: hue-rotate(270deg) drop-shadow(0 0 20px #ffd93d); }
+                100% { filter: hue-rotate(360deg) drop-shadow(0 0 20px #9d4edd); }
             }
             
-            let apiData = null;
-            let localData = getLocalLeaderboard();
-            
-            // Try to get data from API
-            if (apiOnline) {
-                apiData = await getLeaderboardFromAPI();
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
             }
             
-            // Combine and deduplicate data
-            leaderboardData = [];
-            const seenNames = new Set();
-            
-            // Add API data first
-            if (apiData && apiData.length > 0) {
-                apiData.forEach(entry => {
-                    if (!seenNames.has(entry.name)) {
-                        leaderboardData.push(entry);
-                        seenNames.add(entry.name);
-                    }
-                });
+            #mainIcon {
+                transition: transform 0.3s, background 0.5s;
             }
             
-            // Add local data for offline players
-            localData.forEach(entry => {
-                if (!seenNames.has(entry.name)) {
-                    leaderboardData.push(entry);
-                    seenNames.add(entry.name);
-                }
-            });
-            
-            // Sort by score
-            leaderboardData.sort((a, b) => b.score - a.score);
-            
-            // Keep top 20
-            if (leaderboardData.length > 20) {
-                leaderboardData.length = 20;
+            #mainIcon:hover {
+                transform: scale(1.05);
             }
-            
-            updateLeaderboardDisplay();
-        }
-
-        function updateLeaderboardDisplay() {
-            const contentDiv = document.getElementById('leaderboardContent');
-            const totalPlayersEl = document.getElementById('totalPlayers');
-            const yourRankInfoEl = document.getElementById('yourRankInfo');
-            
-            if (!contentDiv || !totalPlayersEl || !yourRankInfoEl) return;
-            
-            // Update total players
-            totalPlayersEl.textContent = `Total Players: ${leaderboardData.length}`;
-            
-            // Find player's rank
-            const playerIndex = leaderboardData.findIndex(entry => entry.name === playerName);
-            if (playerIndex !== -1) {
-                const rank = playerIndex + 1;
-                const score = leaderboardData[playerIndex].score;
-                yourRankInfoEl.textContent = `Your Rank: #${rank} with ${formatNumber(score)} lifetime brainrot`;
-                yourRankInfoEl.style.color = '#6bcf7f';
-            } else {
-                yourRankInfoEl.textContent = `Submit your score to join the leaderboard!`;
-                yourRankInfoEl.style.color = '#ffd93d';
-            }
-            
-            // Show leaderboard table
-            if (leaderboardData.length === 0) {
-                contentDiv.innerHTML = `
-                    <div class="empty-leaderboard">
-                        <span class="emoji">🏆</span>
-                        <p>No players yet!</p>
-                        <p>Be the first to submit your score!</p>
-                        <p style="font-size: 0.9em; color: #4d96ff; margin-top: 20px;">
-                            ${apiOnline ? 'Global leaderboard ready!' : 'Playing offline - connect for global leaderboard'}
-                        </p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Create table
-            const top10 = leaderboardData.slice(0, 10);
-            let tableHTML = `
-                <table class="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th width="60">Rank</th>
-                            <th>Player</th>
-                            <th width="180">Lifetime Brainrot</th>
-                            <th width="100">Prestige</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            
-            top10.forEach((entry, index) => {
-                let rowClass = '';
-                if (index === 0) rowClass = 'rank-1';
-                else if (index === 1) rowClass = 'rank-2';
-                else if (index === 2) rowClass = 'rank-3';
-                else rowClass = 'rank-4-10';
-                
-                let rowStyle = '';
-                if (entry.name === playerName) {
-                    rowStyle = 'background: rgba(107, 207, 127, 0.3); font-weight: bold;';
-                }
-                
-                tableHTML += `
-                    <tr class="${rowClass}" style="${rowStyle}">
-                        <td>
-                            <div class="rank-badge">${index + 1}</div>
-                        </td>
-                        <td class="player-name">${entry.name}</td>
-                        <td class="player-score">${formatNumber(entry.score)} 🧠</td>
-                        <td class="player-prestige">${entry.prestige || 0} ⭐</td>
-                    </tr>
-                `;
-            });
-            
-            tableHTML += `</tbody></table>`;
-            contentDiv.innerHTML = tableHTML;
-        }
-
-        function changePlayerName() {
-            const newName = prompt("Enter your new display name (max 20 chars):", playerName);
-            if (newName === null) return;
-            
-            if (newName && newName.trim() !== "") {
-                const trimmedName = newName.trim().substring(0, 20);
-                playerName = trimmedName;
-                localStorage.setItem('brainrot_player_name', playerName);
-                document.getElementById('playerNameDisplay').textContent = playerName;
-                showAchievement(`Name changed to: ${playerName}`);
-            }
-        }
-
-        // ========== TAB SYSTEM ==========
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            document.getElementById(tabName + 'Section').classList.add('active');
-            
-            if (tabName === 'leaderboard') {
-                refreshLeaderboard();
-            }
-        }
-
-        // ========== AUTO-LOAD ==========
-        window.onload = function() {
-            // Load saved player info
-            loadGame();
-            
-            // Add animation styles
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes loganModePulse {
-                    0%, 100% { filter: hue-rotate(0deg) brightness(1.2); }
-                    50% { filter: hue-rotate(180deg) brightness(1.5); }
-                }
-                
-                @keyframes pulse {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.1); }
-                    100% { transform: scale(1); }
-                }
-                
-                #mainIcon:hover {
-                    transform: scale(1.05);
-                }
-            `;
-            document.head.appendChild(style);
-        };
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
